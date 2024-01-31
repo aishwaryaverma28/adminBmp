@@ -25,8 +25,7 @@ const Opening = () => {
                 localStorage.setItem("academy_id", data?.parent_id);
                 localStorage.setItem("id", id);
                 if (role === "academy") {
-                    // const permissions = "/lp/bmp,/lp/bmp/overview,/lp/bmp/fees,/lp/bmp/training,/lp/bmp/gallery,/lp/bmp/reviews,/lp/bmp/leads,/lp/bmp/support,/lp/bmp/help"
-                    const permissions = "/bmp,/bmp/settings,/bmp/settings/employeeProfile,/bmp/settings/blog/add,/bmp/settings/blog/view,/bmp/settings/review/view,/bmp/settings/tournament/add,/bmp/settings/tournament/view";
+                    const permissions = "/bmp,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/help,/bmp/settings,/bmp/settings/blog/add,/bmp/settings/blog/view,/bmp/settings/review/view,/bmp/settings/tournament/add,/bmp/settings/tournament/view";
                     const userPath = permissions.split(",");
                     const userPathTot = userPath.join(",");
                     const encryptedUserPathTot = CryptoJS.AES.encrypt(
@@ -34,13 +33,11 @@ const Opening = () => {
                         secretKey
                     ).toString();
                     localStorage.setItem("encryptedUserPathTot", encryptedUserPathTot);
-                    // localStorage.setItem("landingUrl", "/lp/bmp/overview");
-                    // navigate("/lp/bmp/overview");
-                    localStorage.setItem("landingUrl", "/bmp");
-                    navigate("/bmp");
+                   localStorage.setItem("landingUrl", "/bmp/academy/overview");
+                    navigate("/bmp/academy/overview");
                 }
                 else if (role === "academy_admin") {
-                    const permissions = "/lp/bmp,/lp/bmp/admin,/lp/bmp/overview,/lp/bmp/fees,/lp/bmp/training,/lp/bmp/gallery,/lp/bmp/reviews,/lp/bmp/leads,/lp/bmp/support,/lp/bmp/help"
+                    const permissions = "/bmp,/bmp/admin,/bmp/academy/overview,/bmp/fees,/bmp/training,/bmp/gallery,/bmp/reviews,/bmp/leads,/bmp/support,/bmp/help"
                     const userPath = permissions.split(",");
                     const userPathTot = userPath.join(",");
                     const encryptedUserPathTot = CryptoJS.AES.encrypt(
@@ -48,8 +45,8 @@ const Opening = () => {
                         secretKey
                     ).toString();
                     localStorage.setItem("encryptedUserPathTot", encryptedUserPathTot);
-                    localStorage.setItem("landingUrl", "/lp/bmp/admin");
-                    navigate("/lp/bmp/admin");
+                    localStorage.setItem("landingUrl", "/bmp/admin");
+                    navigate("/bmp/admin");
                 }
                 setIsLoading(false);
             }

@@ -18,6 +18,16 @@ import ViewTournament from "./components/master-settings/tournament/ViewTourname
 import UpdateTournament from "./components/master-settings/tournament/UpdateTournament.jsx";
 import Opening from "./components/Opening.jsx";
 import BmpAdmin from "./components/BmpAdmin.jsx";
+import BmpDashboard from "./components/bookmyplayer/BmpDashboard.jsx";
+import BmpOverview from "./components/bookmyplayer/BmpOverview.jsx";
+import OverviewById from "./components/bookmyplayer/OverviewById.jsx";
+import FeesNBatches from "./components/bookmyplayer/FeesNBatches";
+import TraningNStrategy from "./components/bookmyplayer/TraningNStrategy";
+import Gallery from "./components/bookmyplayer/Gallery.jsx"
+import Review from "./components/bookmyplayer/Review.jsx";
+import Approval from "./components/bookmyplayer/Approval";
+import BMPLeads from "./components/bookmyplayer/BMPLeads";
+import BMPHelp from "./components/bookmyplayer/BMPHelp"
 const router = createBrowserRouter([
   {
     path: "/:source/:id",
@@ -30,14 +40,65 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       {
+        path: "/bmp/academy",
+        element: <BmpDashboard />,
+        errorElement: <Error />,
+        children: [
+          {
+            path: "/bmp/academy",
+            element: <Navigate to="/bmp/academy/overview" replace />,
+          },
+          {
+            path:"/bmp/academy/overview",
+            element:<SecureRoutes Component={BmpOverview}/>,
+          },
+          {
+            path: "/bmp/academy/overview/:id",
+            element: <OverviewById/>,
+          },
+          {
+            path:"/bmp/academy/fees",
+            element:<SecureRoutes Component={FeesNBatches}/>,
+          },
+          {
+            path:"/bmp/academy/training",
+            element:<SecureRoutes Component={TraningNStrategy}/>,
+          },
+          {
+            path:"/bmp/academy/gallery",
+            element:<SecureRoutes Component={Gallery}/>,
+          },
+          {
+            path:"/bmp/academy/reviews",
+            element:<SecureRoutes Component={Review}/>,
+          },
+          {
+            path:"/bmp/academy/approval",
+            element:<Approval/>,
+          },
+          {
+            path:"/bmp/academy/leads",
+            element:<SecureRoutes Component={BMPLeads}/>,
+          },
+      //     {
+      //       path:"/bmp/academy/support",
+      //       element: (
+      //         <div style={{ padding: '1rem' }}>
+      //           <SecureRoutes Component={SupportTab} />
+      //         </div>
+      //       ),
+      //     },
+          {
+            path:"/bmp/academy/help",
+            element:<SecureRoutes Component={BMPHelp}/>,
+          },
+        ],
+      },
+      {
         path: "/bmp/settings",
         element: <LPSettings />,
         errorElement: <Error />,
         children: [
-          {
-            path: "/bmp/settings",
-            element: <Navigate to="/bmp/settings/employeeProfile" replace />,
-          },
           {
             path: "/bmp/settings/employeeProfile",
             element: <SecureRoutes Component={EmployeeProfile} />,
@@ -48,7 +109,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/bmp/settings/blog/view",
-            element: <SecureRoutes Component={BlogView} />,
+            element: <SecureRoutes Component={BlogView} />, 
           },
           {
             path: "/bmp/settings/blog/view/:id",
