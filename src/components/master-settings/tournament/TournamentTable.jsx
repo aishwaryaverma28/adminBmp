@@ -68,7 +68,7 @@ const TournamentTable = ({ data, rowsPerPage }) => {
           {currentRows.map((row, index) => (
             <tr key={index}>
               <td className="employeeId">{row?.id}</td>
-              <td className="employeeName"><Link to={"/lp/settings/blog/tournament/"+row?.id}>{row?.name}</Link></td>
+              <td className="employeeName"><Link to={"/bmp/settings/tournament/view/"+row?.id}>{row?.name}</Link></td>
               <td className="sectionCount">{row?.website}</td>              
               <td className="employeeDate">{row?.update_date ? row?.update_date?.split("T")[0] : ""}</td>              
             </tr>

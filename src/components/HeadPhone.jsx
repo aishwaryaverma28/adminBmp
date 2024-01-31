@@ -82,7 +82,7 @@ const HeadPhone = () => {
 
 
   useEffect(() => {
-    if (landingUrl === "/lp/bmp/overview" || landingUrl === "/lp/bmp/admin") {
+    if (landingUrl === "/bmp/academy/overview" || landingUrl === "/lp/bmp/admin") {
     getBMPUser();
   } else {
     getUser();

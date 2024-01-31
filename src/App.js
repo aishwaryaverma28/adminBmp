@@ -4,7 +4,6 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
-import EmployeeProfile from "./components/master-settings/EmployeeProfile";
 import BlogAdd from "./components/master-settings/BlogAdd.jsx";
 import BlogView from "./components/master-settings/BlogView";
 import BlogUpdate from "./components/master-settings/BlogUpdate";
@@ -27,7 +26,6 @@ import Gallery from "./components/bookmyplayer/Gallery.jsx"
 import Review from "./components/bookmyplayer/Review.jsx";
 import Approval from "./components/bookmyplayer/Approval";
 import BMPLeads from "./components/bookmyplayer/BMPLeads";
-import BMPHelp from "./components/bookmyplayer/BMPHelp"
 const router = createBrowserRouter([
   {
     path: "/:source/:id",
@@ -88,10 +86,6 @@ const router = createBrowserRouter([
       //         </div>
       //       ),
       //     },
-          {
-            path:"/bmp/academy/help",
-            element:<SecureRoutes Component={BMPHelp}/>,
-          },
         ],
       },
       {
@@ -99,10 +93,6 @@ const router = createBrowserRouter([
         element: <LPSettings />,
         errorElement: <Error />,
         children: [
-          {
-            path: "/bmp/settings/employeeProfile",
-            element: <SecureRoutes Component={EmployeeProfile} />,
-          },
           {
             path: "/bmp/settings/blog/add",
             element: <SecureRoutes Component={BlogAdd} />,
@@ -124,7 +114,7 @@ const router = createBrowserRouter([
             element: <SecureRoutes Component={ViewTournament} />,
           },
           {
-            path: "/bmp/settings/blog/tournament/:id",
+            path: "/bmp/settings/tournament/view/:id",
             element: <UpdateTournament />,
           },
 

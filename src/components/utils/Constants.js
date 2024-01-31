@@ -34,9 +34,8 @@ export { getDecryptedUserPath };
 
 //=============================================================logout function
 export const handleLogout = () => {
-  if (landingUrl === "/lp/bmp/overview" || landingUrl === "/lp/bmp/admin") {
+  if (landingUrl === "/bmp/academy/overview" || landingUrl === "/lp/bmp/admin") {
     localStorage.clear();
-    // window.location.href = "https://www.bookmyplayer.com/login";
     window.location.href = "https://www.bookmyplayer.com/front/logout";
   } else {
     localStorage.clear();
@@ -44,8 +43,6 @@ export const handleLogout = () => {
   }
 };
 // =============================================================apis used
-// const start = "http://core.leadplaner.com:3001/api";
-// const start = "https://fiduciagroup.leadplaner.com/api";
 const start = "https://core.leadplaner.com/api/api";
 const userId = localStorage.getItem("id");
 export const USER_INFO = start + "/user/getuserinfo";

@@ -60,7 +60,7 @@ const EmployeeView = () => {
   return (
     <>
       <header className="headerEditor">
-        <h2>View Blog Details</h2>
+        <p className="common-fonts add-new-blog"> View Blog</p>
       </header>
       <div className="buttonBox">
         <div className="searchBar">
@@ -75,7 +75,7 @@ const EmployeeView = () => {
               <option value="firstcron">firstcron</option>
               <option value="routplaner">routplaner</option>
             </select>
-          <Link to="/lp/settings/blog/add">
+          <Link to="/bmp/settings/blog/add">
             <button type="button" className="addBtn">
               add <i className="fas fa-plus"></i>
             </button>

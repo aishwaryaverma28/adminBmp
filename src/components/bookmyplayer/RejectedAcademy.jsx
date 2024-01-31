@@ -71,7 +71,7 @@ const RejectedAcademy = () => {
               <tr key={data?.id}>
                 <td>{data?.id}</td>
                 <td>
-                  <Link to={"/lp/bmp/overview/" + data?.id}>
+                  <Link to={"/bmp/academy/overview/" + data?.id}>
                     <div className='academy_new_blue_logo'>
                       <img src={Logo} alt="" />
                       <p> {data?.name}</p>

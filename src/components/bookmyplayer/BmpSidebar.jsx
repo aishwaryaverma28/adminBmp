@@ -79,11 +79,6 @@ const BmpSidebar = () => {
           Contact Support
         </NavLink>
       </p>
-      <p className="prefrence-options setting-font-style">
-        <NavLink exact to="/bmp/academy/help">
-          Help
-        </NavLink>
-      </p>
     </section>
   );
 };

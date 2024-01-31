@@ -592,7 +592,7 @@ const BlogUpdate = () => {
         <p className="common-fonts add-new-blog">Number of views: {views}</p>
       </header>
       <div className="back-to-user general-refresh blog-back">
-        <Link to={"/lp/settings/blog/view"}>
+        <Link to={"/bmp/settings/blog/add"}>
           <button className="common-fonts">
             <img src={LeftArrow} alt="" />
             <span>Back To Blog Table</span>
@@ -964,7 +964,7 @@ const BlogUpdate = () => {
                   <div className="saveBtnRight">
                     {stateBtn === 0 ? (
                       <button className="closeBtn">
-                        <Link to={"/lp/settings/blog/view"}>Close</Link>
+                        <Link to={"/bmp/settings/blog/view"}>Close</Link>
                       </button>
                     ) : (
                       <input

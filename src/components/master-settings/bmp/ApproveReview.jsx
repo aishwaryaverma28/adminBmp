@@ -68,7 +68,7 @@ const ApproveReview = () => {
             <tr key={data?.id}>
               <td>{data?.id}</td>
               <td>
-                <Link to={"/lp/settings/review/view/" + data?.id}>
+                <Link to={"/bmp/settings/review/view/" + data?.id}>
                   <div className='academy_new_blue_logo'>
                     <img src={Logo} alt="" />
                     <p> {data?.name}</p>

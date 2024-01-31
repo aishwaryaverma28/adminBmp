@@ -354,7 +354,7 @@ const UpdateTournament = () => {
                 <p className="common-fonts add-new-blog"> Add a new Tournament</p>
             </header>
             <div className="back-to-user general-refresh blog-back">
-                <Link to={"/lp/settings/tournament/view"}>
+                <Link to={"/bmp/settings/tournament/"}>
                     <button className="common-fonts">
                         <img src={LeftArrow} alt="" />
                         <span>Back To Tournament Table</span>

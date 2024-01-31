@@ -88,6 +88,10 @@ const BmpReviewsView = () => {
   });
 
   return (
+    <>
+    <header className="headerEditor">
+    <p className="common-fonts add-new-blog"> View Review</p>
+  </header>
     <div className='academy_rejected review_academy_top'>
       <div className="genral-setting-btn genral-setting-fonts aaa">
         <button
@@ -151,19 +155,19 @@ const BmpReviewsView = () => {
                   {filteredData?.map((data) => (
                     <tr key={data?.id}>
                       <td>
-                        <Link to={"/lp/settings/review/view/" + data?.id}>
+                        <Link to={"/bmp/settings/review/view/" + data?.id}>
                           {data?.id}
                         </Link>
                       </td>
                       <td>
-                        <Link to={"/lp/settings/review/view/" + data?.id}>
+                        <Link to={"/bmp/settings/review/view/" + data?.id}>
                           <div className='academy_new_blue_logo'>
                             <img src={Logo} alt="" />
                             <p> {data?.name}</p>
                           </div>
                         </Link>
                       </td>
-                      <td><Link to={"/lp/settings/review/view/" + data?.id}>{data?.update_date?.split("T")[0]}</Link></td>
+                      <td><Link to={"/bmp/settings/review/view/" + data?.id}>{data?.update_date?.split("T")[0]}</Link></td>
                     </tr>
                   ))}
                 </tbody>
@@ -178,7 +182,7 @@ const BmpReviewsView = () => {
         activeTab === "approve" && <ApproveReview />
       }
     </div >
-
+    </>
   )
 }
 

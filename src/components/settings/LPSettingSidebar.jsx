@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/LPSetting.css";
-import { NavLink } from "react-router-dom";
+import { NavLink,Link } from "react-router-dom";
 import arrowLeft from "../../assets/image/arrow-left.svg";
 import GreaterDown from "../../assets/image/greater-arrow-down.svg";
 import GreaterUp from "../../assets/image/greater-up.svg";
@@ -11,51 +11,11 @@ const LPSettingSidebar = () => {
   const [masterSubMenu, setMasterSubMenu] = useState(null);
   const decryptedUserPath = getDecryptedUserPath();
   const allowed = decryptedUserPath.split(",");
-  // const allowed = [
-  //   "/bmp/lead",
-  //   "/bmp/home",
-  //   "/bmp/mail",
-  //   "/bmp/contacts",
-  //   "/bmp/deals",
-  //   "/bmp/settings",
-  //   "/bmp/settings/general",
-  //   "/bmp/settings/notification",
-  //   "/bmp/settings/usernteams",
-  //   "/bmp/settings/companysettings",
-  //   "/bmp/settings/recyclebin",
-  //   "/bmp/settings/privacyConcent",
-  //   "/bmp/settings/settingLeads",
-  //   "/bmp/settings/settingDeal",
-  //   "/bmp/settings/settingUsage",
-  //   "/bmp/settings/settingImpExp",
-  //   "/bmp/settings/blog/add",
-  //   "/bmp/settings/blog/view",
-  //   "/bmp/settings/sitePages/add",
-  //   "/bmp/settings/sitePages/view",
-  //   "/bmp/settings/hebmpSection/add",
-  //   "/bmp/settings/hebmpSection/update",
-  //   "/bmp/settings/userManagement/add",
-  //   "/bmp/settings/userManagement/update",
-  //   "/bmp/settings/employee/add",
-  //   "/bmp/settings/employee/view",
-  //   "/bmp/settings/accessManagement",
-  //   "/bmp/settings/reportsAndAnalytics",
-  //   "/bmp/settings/masterSettings/City",
-  //   "/bmp/settings/system/state",
-  //   "/bmp/settings/employeeProfile",
-  //     "/bmp/settings/viewProfile/timeSheet",
-  //     "/bmp/settings/viewProfile/documents",
-  //     "/bmp/settings/viewProfile/salarySlip",
-  // ];
   const isPathAllowed = (path) => {
     if (allowed.length === 0) {
       return true; // All paths are allowed when allowed array is empty
     }
     return allowed.includes(path);
-  };
-
-  const handleGoBack = () => {
-    window.history.back(); // Navigate back in the browser history
   };
 
   const toggleSubMenu = (submenu) => {
@@ -69,10 +29,12 @@ const LPSettingSidebar = () => {
   return (
     <section className="setting-side-panel">
       <div className="go-back-btn ">
-        <button className="setting-font-style" onClick={handleGoBack}>
+      <Link to={"/bmp/academy/overview"}>
+        <button className="setting-font-style">
           <img src={arrowLeft} alt="" />
           <span>Go Back</span>
         </button>
+        </Link>
       </div>
       <div>
         <p className="setting-heading setting-font-style">Settings</p>

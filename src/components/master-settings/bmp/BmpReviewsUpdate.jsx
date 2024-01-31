@@ -76,7 +76,7 @@ const BmpReviewsUpdate = () => {
     <>
       <div className='academy_rejected'>
       <div className="go-back-btn ">
-        <Link to={"/lp/settings/review/view"}>
+        <Link to={"/bmp/settings/review/view"}>
         <button className="setting-font-style">
           <img src={arrowLeft} alt="" />
           <span>Go Back</span>

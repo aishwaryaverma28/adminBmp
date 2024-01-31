@@ -68,15 +68,6 @@
     cursor: pointer;
   }
 }
-
-.headerEditor {
-  /* backdrop-filter: blur(6px); */
-  background: #1e2224;
-  padding: 16px;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
 .headerEditor h2 {
   font-family: "Lexend Deca";
   color: #ffffff;

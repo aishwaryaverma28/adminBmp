@@ -63,7 +63,7 @@ const ViewTournament = () => {
           </label>
         </div>
         <div>
-          <Link to="/lp/settings/helpSection/add">
+          <Link to="/bmp/settings/tournament/add">
             <button type="button" className="addBtn">
               add <i className="fas fa-plus"></i>
             </button>
