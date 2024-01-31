@@ -79,7 +79,7 @@ const LPSettingSidebar = () => {
       </div>
       
       <div>
-        {isPathAllowed("/bmp/settings/employeeProfile") && (
+        {isPathAllowed("/bmp/settings/blog/add") && (
           <div
             className="setting-arrow"
             onClick={() => toggleSubMenu("master")}
@@ -95,15 +95,7 @@ const LPSettingSidebar = () => {
 
       {openSubMenu === "master" && (
         <>
-          {isPathAllowed("/bmp/settings/employeeProfile") && (
-            <p className="prefrence-options setting-font-style">
-              <NavLink exact to="/bmp/settings/employeeProfile">
-                View Profile
-              </NavLink>
-            </p>
-          )}
-
-          {(isPathAllowed("/bmp/settings/blog/add") ||
+         {(isPathAllowed("/bmp/settings/blog/add") ||
             isPathAllowed("/bmp/settings/blog/view")) && (
               <div
                 className="master-arrow"
