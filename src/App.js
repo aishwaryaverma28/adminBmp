@@ -21,63 +21,65 @@ import BmpAdmin from "./components/BmpAdmin.jsx";
 const router = createBrowserRouter([
   {
     path: "/:source/:id",
-    element: <Opening/>,
-    errorElement:<Error/>,
+    element: <Opening />,
+    errorElement: <Error />,
   },
   {
-path: "/bmp",
-element: <BmpAdmin/>,
-errorElement: <Error />,
-  },
-  {
-path: "/bmp/settings",
-element: <LPSettings/>,
-errorElement: <Error/>,
-children: [
-  {
-    path: "/bmp/settings",
-    element: <Navigate to="/bmp/settings/employeeProfile" replace/>,
-  },
-  {
-    path: "/bmp/settings/employeeProfile",
-    element: <SecureRoutes Component= {EmployeeProfile}/>,
-  },
-  {
-    path: "/bmp/settings/blog/add",
-    element: <SecureRoutes Component={BlogAdd} />,
-  },
-  {
-    path: "/bmp/settings/blog/view",
-    element: <SecureRoutes Component={BlogView} />,
-  },
-  {
-    path: "/bmp/settings/blog/view/:id",
-    element: <BlogUpdate />,
-  },
-  {
-    path: "/bmp/settings/tournament/add",
-    element: <SecureRoutes Component={AddTournament}/>,
-  },
-  {
-    path: "/bmp/settings/tournament/view",
-    element: <SecureRoutes Component={ViewTournament}/>,
-  },
-  {
-    path: "/bmp/settings/blog/tournament/:id",
-    element: <UpdateTournament />,
-  },
+    path: "/bmp",
+    element: <BmpAdmin />,
+    errorElement: <Error />,
+    children: [
+      {
+        path: "/bmp/settings",
+        element: <LPSettings />,
+        errorElement: <Error />,
+        children: [
+          {
+            path: "/bmp/settings",
+            element: <Navigate to="/bmp/settings/employeeProfile" replace />,
+          },
+          {
+            path: "/bmp/settings/employeeProfile",
+            element: <SecureRoutes Component={EmployeeProfile} />,
+          },
+          {
+            path: "/bmp/settings/blog/add",
+            element: <SecureRoutes Component={BlogAdd} />,
+          },
+          {
+            path: "/bmp/settings/blog/view",
+            element: <SecureRoutes Component={BlogView} />,
+          },
+          {
+            path: "/bmp/settings/blog/view/:id",
+            element: <BlogUpdate />,
+          },
+          {
+            path: "/bmp/settings/tournament/add",
+            element: <SecureRoutes Component={AddTournament} />,
+          },
+          {
+            path: "/bmp/settings/tournament/view",
+            element: <SecureRoutes Component={ViewTournament} />,
+          },
+          {
+            path: "/bmp/settings/blog/tournament/:id",
+            element: <UpdateTournament />,
+          },
 
-  {
-    path: "/bmp/settings/review/view",
-    element: <SecureRoutes Component={BmpReviewsView} />,
+          {
+            path: "/bmp/settings/review/view",
+            element: <SecureRoutes Component={BmpReviewsView} />,
+          },
+          {
+            path: "/bmp/settings/review/view/:id",
+            element: <BmpReviewsUpdate />,
+          },
+        ],
+      },
+    ],
   },
-  {
-    path: "/bmp/settings/review/view/:id",
-    element: <BmpReviewsUpdate />,
-  },
-]
-  },
-  ]);
+]);
 function App() {
   return (
     <>
