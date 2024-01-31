@@ -75,7 +75,7 @@ const BmpSidebar = () => {
         </NavLink>
       </p>
       <p className="prefrence-options setting-font-style">
-        <NavLink exact to="/lp/bmp/support">
+        <NavLink exact to="/bmp/academy/support">
           Contact Support
         </NavLink>
       </p>

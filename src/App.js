@@ -8,7 +8,7 @@ import BlogAdd from "./components/master-settings/BlogAdd.jsx";
 import BlogView from "./components/master-settings/BlogView";
 import BlogUpdate from "./components/master-settings/BlogUpdate";
 import SecureRoutes from "./components/SecureRoutes";
-import Error from "./components/Error";
+import Error from "./components/Error.jsx";
 import LPSettings from "./components/settings/LPSettings";
 import BmpReviewsView from "./components/master-settings/bmp/BmpReviewsView.jsx";
 import BmpReviewsUpdate from "./components/master-settings/bmp/BmpReviewsUpdate.jsx";
@@ -26,6 +26,7 @@ import Gallery from "./components/bookmyplayer/Gallery.jsx"
 import Review from "./components/bookmyplayer/Review.jsx";
 import Approval from "./components/bookmyplayer/Approval";
 import BMPLeads from "./components/bookmyplayer/BMPLeads";
+import SupportTab from "./components/settings/SupportTab";
 const router = createBrowserRouter([
   {
     path: "/:source/:id",
@@ -78,14 +79,14 @@ const router = createBrowserRouter([
             path:"/bmp/academy/leads",
             element:<SecureRoutes Component={BMPLeads}/>,
           },
-      //     {
-      //       path:"/bmp/academy/support",
-      //       element: (
-      //         <div style={{ padding: '1rem' }}>
-      //           <SecureRoutes Component={SupportTab} />
-      //         </div>
-      //       ),
-      //     },
+          {
+            path:"/bmp/academy/support",
+            element: (
+              <div style={{ padding: '1rem' }}>
+                <SecureRoutes Component={SupportTab} />
+              </div>
+            ),
+          },
         ],
       },
       {
