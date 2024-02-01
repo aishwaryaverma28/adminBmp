@@ -41,7 +41,7 @@ import "./styles/workflow.css";
 import "./styles/CompanySettings.css";
 import "./styles/DealUpdate.css";
 
-const BmpAdmin = () => {
+const BmpPanel = () => {
     return (
         <div>
             <Provider store={store}>
@@ -52,4 +52,4 @@ const BmpAdmin = () => {
     )
 }
 
-export default BmpAdmin
+export default BmpPanel

@@ -16,7 +16,7 @@ import AddTournament from "./components/master-settings/tournament/AddTournament
 import ViewTournament from "./components/master-settings/tournament/ViewTournament.jsx";
 import UpdateTournament from "./components/master-settings/tournament/UpdateTournament.jsx";
 import Opening from "./components/Opening.jsx";
-import BmpAdmin from "./components/BmpAdmin.jsx";
+import BmpPanel from "./components/BmpPanel.jsx";
 import BmpDashboard from "./components/bookmyplayer/BmpDashboard.jsx";
 import BmpOverview from "./components/bookmyplayer/BmpOverview.jsx";
 import OverviewById from "./components/bookmyplayer/OverviewById.jsx";
@@ -27,6 +27,7 @@ import Review from "./components/bookmyplayer/Review.jsx";
 import Approval from "./components/bookmyplayer/Approval";
 import BMPLeads from "./components/bookmyplayer/BMPLeads";
 import SupportTab from "./components/settings/SupportTab";
+import BmpAdmin from "./components/bookmyplayer/BmpAdmin.jsx"
 const router = createBrowserRouter([
   {
     path: "/:source/:id",
@@ -35,9 +36,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/bmp",
-    element: <BmpAdmin />,
+    element: <BmpPanel />,
     errorElement: <Error />,
     children: [
+      {
+        path: "/bmp/admin",
+        element: <BmpAdmin />,
+      },
       {
         path: "/bmp/academy",
         element: <BmpDashboard />,

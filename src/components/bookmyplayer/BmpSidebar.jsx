@@ -10,7 +10,7 @@ const BmpSidebar = () => {
   const id = localStorage.getItem("academy_id");
   const handleBackToTable = () => {
     localStorage.removeItem("academy_id");
-    navigate("/lp/bmp/admin");
+    navigate("/bmp/admin");
   };
 
   return (
@@ -40,7 +40,7 @@ const BmpSidebar = () => {
         )
       }
       </p>
-      <p className="prefrence-options setting-font-style">
+      {/* <p className="prefrence-options setting-font-style">
         <NavLink exact to="/bmp/academy/fees">
           Fees and Batches
         </NavLink>
@@ -49,7 +49,7 @@ const BmpSidebar = () => {
         <NavLink exact to="/bmp/academy/training">
           Training Strategy
         </NavLink>
-      </p>
+      </p> */}
       <p className="prefrence-options setting-font-style">
         <NavLink exact to="/bmp/academy/gallery">
           Photos & Video

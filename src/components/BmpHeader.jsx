@@ -201,15 +201,15 @@ const BmpHeader = () => {
                       : `${clientData?.name}`}
                   </h5>
                   <p className="email-case">{clientData?.email}</p>
-                  {landingUrl === "/lp/bmp/overview" ||
-                  landingUrl === "/lp/bmp/admin" ? (
+                  {landingUrl === "/bmp/academy/overview" ||
+                  landingUrl === "/bmp/admin" ? (
                     <p>{clientData?.type}</p>
                   ) : (
                     <p>{clientData?.job_title}</p>
                   )}
                 </div>
               </div>
-              {landingUrl === "/lp/bmp/overview" ? (
+              {landingUrl === "/bmp/academy/overview" ? (
                 <div className="profileNPref" onClick={handleViewSite}>
                   View Profile
                 </div>
@@ -220,8 +220,8 @@ const BmpHeader = () => {
               <div className="pass_flex">
                 <div className="userId">
                   User Id:{" "}
-                  {landingUrl === "/lp/bmp/overview" ||
-                  landingUrl === "/lp/bmp/admin"
+                  {landingUrl === "/bmp/academy/overview" ||
+                  landingUrl === "/bmp/admin"
                     ? clientData?.id
                     : 123456789}
                 </div>

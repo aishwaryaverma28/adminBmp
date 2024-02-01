@@ -52,7 +52,7 @@ const ServiceSupport = () => {
       });
   };
   useEffect(() => {
-    if (landingUrl === "/lp/bmp/overview" || landingUrl === '/lp/bmp/admin') {
+    if (landingUrl === "/bmp/academy/overview" || landingUrl === '/bmp/admin') {
       getMyTicket();
     } else {
       getTicket();

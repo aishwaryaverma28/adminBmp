@@ -95,7 +95,7 @@ const TraningNStrategy = () => {
   
   const fetchAcademyDetails = () => {
     axios
-      .get(GET_ACADEMY + id
+    .post(GET_ACADEMY, { academy_id: id }
       //   , {
       //   headers: {
       //     Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
