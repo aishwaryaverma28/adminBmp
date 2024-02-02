@@ -43,8 +43,8 @@ export const handleLogout = () => {
   }
 };
 // =============================================================apis used
-const start = "https://core.leadplaner.com/api/api";
-// const start = "http://localhost:4000/api";
+// const start = "https://core.leadplaner.com/api/api";
+const start = "http://localhost:4000/api";
 const userId = localStorage.getItem("id");
 export const USER_INFO = start + "/user/getuserinfo";
 export const BMP_USER = start + "/bmp/getUser";
@@ -124,12 +124,12 @@ export const RESTORE_NOTE_TRASH = start + "/note/restorefromtrash";
 export const DELETE_NOTE_TRASH = start + "/note/deletefromtrash";
 //========================================================================COMPANY settings
 export const GET_ORG_DATA = start + "/user/getorg/";
-export const ADD_TICKET = start + "/user/ticket/raise";
+export const ADD_TICKET = start + "/bmp/ticket/raise";
 export const SERVICE_SUPPORT = start + "/user/ticket/getAll/all";
 export const UPDATE_TICKET = start + "/user/ticket/update/";
 export const GET_AUDIT = start + "/setting/getAll";
 export const UPDATE_AUDIT = start + "/setting/edit/";
-export const GET_SERVICE = start + "/user/ticket/getmytickets/";
+export const GET_SERVICE = start + "/bmp/ticket/getmytickets/";
 
 export const GET_ALL_SEARCH = start + "/user/help/searchquestion";
 export const GET_SEARCH_ID = start + "/user/help/getbyid/";

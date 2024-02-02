@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import '../styles/CPGenral.css';
 import axios from 'axios';
 import {
-  getDecryptedToken,
-  SERVICE_SUPPORT,GET_SERVICE 
+  getDecryptedToken, GET_SERVICE 
 } from '../utils/Constants';
 import ServiceRequestTab from './ServiceRequestTab';
 import EditRequest from './EditRequest';
 
 const ServiceSupport = () => {
-  const orgId = localStorage.getItem('org_id');
-  const landingUrl = localStorage.getItem("landingUrl");
+  const id = localStorage.getItem('id');
   const decryptedToken = getDecryptedToken();
   const [ticket, setTicket] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState(null); // State for selected ticket
@@ -18,26 +16,9 @@ const ServiceSupport = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isLoading,setLoading] = useState(true);
 
-  const getTicket = () => {
+ const getMyTicket = () => {
     axios
-      .post(SERVICE_SUPPORT,{org_id: orgId}, {
-        headers: {
-          Authorization: `Bearer ${decryptedToken}`,
-        },
-      })
-      .then((response) => {
-        setTicket(response?.data?.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
-  };
-
-  const getMyTicket = () => {
-    axios
-      .get(GET_SERVICE + orgId, {
+      .get(GET_SERVICE + id, {
         headers: {
           Authorization: `Bearer ${decryptedToken}`,
         },
@@ -52,12 +33,8 @@ const ServiceSupport = () => {
       });
   };
   useEffect(() => {
-    if (landingUrl === "/bmp/academy/overview" || landingUrl === '/bmp/admin') {
       getMyTicket();
-    } else {
-      getTicket();
-    }    
-  }, []);
+    }, []);
 
   const handleOpenServiceTab = (item) => {
     setSelectedTicket(item); // Set the selected ticket item
@@ -74,7 +51,7 @@ const ServiceSupport = () => {
     setIsEditOpen(true);
   }
   const serviceRefresh = () => {
-    getTicket();
+    getMyTicket();
   }
 
   const handleEditClose = () => {

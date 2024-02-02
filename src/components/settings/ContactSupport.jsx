@@ -11,9 +11,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ContactSupport = () => {
-  const orgId = localStorage.getItem('org_id');
   const userId = localStorage.getItem("id");
-  const landingUrl = localStorage.getItem("landingUrl");
   const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState("");
   const decryptedToken = getDecryptedToken();
@@ -24,8 +22,7 @@ const ContactSupport = () => {
     email: "",
     mobile: "",
     category: "Technical",
-    priority: "Low",
-    org_id: orgId,
+    user_id: parseInt(userId),
 })
 async function getBMPUser() {
   let body = {};
@@ -46,7 +43,7 @@ async function getBMPUser() {
       setDetails({
         email: data?.email,
         mobile: data?.phone,
-        org_id: orgId,
+        user_id: parseInt(userId),
       })
     }
   }catch (error) {
@@ -82,7 +79,7 @@ async function getBMPUser() {
       setDetails({
         email: data?.email,
         mobile: data?.phone,
-        org_id: orgId,
+        user_id: parseInt(userId),
       })
     }
   } catch (error) {
@@ -141,7 +138,6 @@ async function getBMPUser() {
         title: "",
         description: "",
         category: "",
-        priority: "",
       });
     })
     .catch((error) => {
@@ -227,7 +223,7 @@ setStateBtn(0);
             </select>
           </div>
 
-          <div className="contact-tab-fields">
+          {/* <div className="contact-tab-fields">
             <label htmlFor="" className="common-fonts contact-tab-label">
               Priority
             </label>
@@ -241,7 +237,7 @@ setStateBtn(0);
               <option value="Average">Average</option>
               <option value="High">High</option>
             </select>
-          </div>
+          </div> */}
 
           <div className="contact-tab-fields">
             <label

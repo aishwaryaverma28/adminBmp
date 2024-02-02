@@ -5,10 +5,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const HeadPhone = () => {
-  const orgId = localStorage.getItem('org_id');
-  const userId = localStorage.getItem("id");
-  const landingUrl = localStorage.getItem("landingUrl");
-  const fileInputRef = useRef(null);
+   const userId = localStorage.getItem("id");
+   const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState("");
   const decryptedToken = getDecryptedToken();
   const [stateBtn, setStateBtn] = useState(0);
@@ -18,36 +16,9 @@ const HeadPhone = () => {
     email: "",
     mobile: "",
     category: "Technical",
-    priority: "Low",
-    org_id: orgId,
+    user_id: parseInt(userId),
   });
   // const [clientData, setClientData] = useState(null);
-
-
-  async function getUser() {
-    try {
-      const response = await axios.get(USER_INFO, {
-        headers: {
-          Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
-        },
-      });
-      const data = response?.data?.data;
-      if (response.data.status === 1) {
-        setDetails({
-          email: data[0]?.email,
-          mobile: data[0]?.phone,
-          org_id: orgId,
-        })
-        // setClientData(data[0]);
-      }
-    } catch (error) {
-      console.log(error);
-      if (error?.response?.data?.message === "Invalid or expired token.") {
-        alert(error?.response?.data?.message);
-        handleLogout();
-      }
-    }
-  }
 
   async function getBMPUser() {
     try {
@@ -68,7 +39,7 @@ const HeadPhone = () => {
         setDetails({
           email: data?.email,
           mobile: data?.phone,
-          org_id: orgId,
+          user_id: parseInt(userId),
         })
       }
     } catch (error) {
@@ -82,11 +53,7 @@ const HeadPhone = () => {
 
 
   useEffect(() => {
-    if (landingUrl === "/bmp/academy/overview" || landingUrl === "/bmp/admin") {
     getBMPUser();
-  } else {
-    getUser();
-  }
   }, []);
 
   const handleFileChange = (event) => {
@@ -134,7 +101,6 @@ const HeadPhone = () => {
           title: "",
           description: "",
           category: "",
-          priority: "",
         });
         setStateBtn(0);
       })
@@ -222,7 +188,7 @@ const HeadPhone = () => {
             </select>
           </div>
 
-          <div className="contact-tab-fields">
+          {/* <div className="contact-tab-fields">
             <label htmlFor="" className="common-fonts contact-tab-label">
               Priority
             </label>
@@ -236,7 +202,7 @@ const HeadPhone = () => {
               <option value="Average">Average</option>
               <option value="High">High</option>
             </select>
-          </div>
+          </div> */}
 
           <div className="contact-tab-fields">
             <label
