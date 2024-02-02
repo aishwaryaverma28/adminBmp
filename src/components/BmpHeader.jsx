@@ -162,7 +162,7 @@ const BmpHeader = () => {
               </button>
             </li>
             <li>
-              <Link to={"/bmp/settings/blog/add"}>
+              <Link to={"/bmp/settings/tournament/add"}>
                 <button type="button" className="settingBtn" title="Settings">
                   <i className="fa-sharp fa-solid fa-gear"></i>
                 </button>

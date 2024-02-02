@@ -4,9 +4,6 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
-import BlogAdd from "./components/master-settings/BlogAdd.jsx";
-import BlogView from "./components/master-settings/BlogView";
-import BlogUpdate from "./components/master-settings/BlogUpdate";
 import SecureRoutes from "./components/SecureRoutes";
 import Error from "./components/Error.jsx";
 import LPSettings from "./components/settings/LPSettings";
@@ -99,18 +96,6 @@ const router = createBrowserRouter([
         element: <LPSettings />,
         errorElement: <Error />,
         children: [
-          {
-            path: "/bmp/settings/blog/add",
-            element: <SecureRoutes Component={BlogAdd} />,
-          },
-          {
-            path: "/bmp/settings/blog/view",
-            element: <SecureRoutes Component={BlogView} />, 
-          },
-          {
-            path: "/bmp/settings/blog/view/:id",
-            element: <BlogUpdate />,
-          },
           {
             path: "/bmp/settings/tournament/add",
             element: <SecureRoutes Component={AddTournament} />,
