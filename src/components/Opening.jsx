@@ -38,6 +38,18 @@ const Opening = () => {
                     localStorage.setItem("landingUrl", "/bmp/academy/overview");
                     navigate("/bmp/academy/overview");
                 }
+                else if (role === "player") {
+                    const permissions = "/lp/bmp,/lp/bmp/overview,/lp/bmp/fees,/lp/bmp/training,/lp/bmp/gallery,/lp/bmp/reviews,/lp/bmp/leads,/lp/bmp/support,/lp/bmp/help"
+                    const userPath = permissions.split(",");
+                    const userPathTot = userPath.join(",");
+                    const encryptedUserPathTot = CryptoJS.AES.encrypt(
+                        userPathTot,
+                        secretKey
+                    ).toString();
+                    localStorage.setItem("encryptedUserPathTot", encryptedUserPathTot);
+                    localStorage.setItem("landingUrl", "/lp/bmp/overview");
+                    navigate("/lp/bmp/overview");
+                }
                 else if (role === "academy_admin") {
                     const permissions = "/bmp,/bmp/admin,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/support,/bmp/settings,/bmp/settings/review/view,/bmp/settings/tournament/add,/bmp/settings/tournament/view";
                     const userPath = permissions.split(",");

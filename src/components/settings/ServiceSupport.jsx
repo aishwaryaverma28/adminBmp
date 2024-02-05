@@ -87,7 +87,6 @@ const ServiceSupport = () => {
                     <th className="common-fonts">Title</th>
                     <th className="common-fonts">description</th>
                     <th className="common-fonts">category</th>
-                    <th className="common-fonts">priority</th>
                     <th className="common-fonts">status</th>
                     <th className="common-fonts">assigned to</th>
                     <th className="common-fonts">created date</th>
@@ -103,7 +102,6 @@ const ServiceSupport = () => {
                       <td className="common-fonts" onClick={() => handleOpenServiceTab(item)} >{item.title.slice(0, 10) + '...'} </td>
                       <td className="common-fonts" onClick={() => handleOpenServiceTab(item)} >{item.description.slice(0, 10) + '...'}</td>
                       <td className="common-fonts" onClick={() => handleOpenServiceTab(item)}>{item.category}</td>
-                      <td className="common-fonts" onClick={() => handleOpenServiceTab(item)}>{item.priority}</td>
                       <td className="common-fonts" onClick={() => handleOpenServiceTab(item)}>{item.status}</td>
                       <td className="common-fonts" onClick={() => handleOpenServiceTab(item)}>{item.assigned_to}</td>
                       <td className="common-fonts" onClick={() => handleOpenServiceTab(item)}>{item.created_at.split('T')[0]}</td>

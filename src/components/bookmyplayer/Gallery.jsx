@@ -156,6 +156,8 @@ const Gallery = () => {
     // }
     )
     .then((response) => {
+      if (response?.data?.data && response?.data?.data?.length !== 0) 
+      {
         setAcademyData(response?.data?.data[0]);
         setProgress(response?.data?.data[0]?.completion_percentage);
         let dummy = response?.data?.data[0]?.completion_percentage + ",1"
@@ -189,6 +191,7 @@ const Gallery = () => {
             response.data.data[0].updated_column?.split(",").reverse()
           );
         }
+      }
       })
       .catch((error) => {
         console.log(error);
@@ -737,7 +740,7 @@ const Gallery = () => {
             Photos & Video Gallery
           </p>
           <p className="common-fonts bmp-add-photo">
-            Add photos and videos of your academy.
+            Add photos and videos of your <span>{role_name}</span>.
           </p>
           <p className="common-fonts bmp-prefer">
             Psst! A secret People prefer videos more than photos.
@@ -750,7 +753,7 @@ const Gallery = () => {
                   }`}
                 onClick={() => handleTabClick("academy")}
               >
-                <span className="mrkt-whatsapp">Academy & Banner</span>
+                <span className="mrkt-whatsapp"><span>{role_name}</span> & Banner</span>
               </button>
               <button
                 className={`genral-btn contact-genral-btn ${activeTab === "training" ? "genral-active" : ""
@@ -847,7 +850,7 @@ const Gallery = () => {
             <div className="bmp-heading-flex">
               <div>
                 <p className="common-fonts bmp-banner-upload">
-                  Upload Academy images/videos
+                  Upload <span>{role_name}</span> images/videos
                 </p>
                 <p className="common-fonts light-color bmp-size">
                   Recommended image size 820x312

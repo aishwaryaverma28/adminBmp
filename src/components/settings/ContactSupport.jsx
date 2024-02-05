@@ -59,37 +59,7 @@ useEffect(() => {
   getBMPUser();
 }, []);
 
-async function getBMPUser() {
-  try {
-    const response = await axios.post(
-      BMP_USER,
-      {
-        userId: userId,
-      }
-      // ,
-      // {
-      //   headers: {
-      //     Authorization: `Bearer ${decryptedToken}`,
-      //   },
-      // }
-    );
-    const data = response.data.user;
-    console.log(data);
-    if (response.data.status === 1) {
-      setDetails({
-        email: data?.email,
-        mobile: data?.phone,
-        user_id: parseInt(userId),
-      })
-    }
-  } catch (error) {
-    console.log(error);
-    if (error?.response?.data?.message === "Invalid or expired token.") {
-      alert(error?.response?.data?.message);
-      handleLogout();
-    }
-  }
-}
+
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];

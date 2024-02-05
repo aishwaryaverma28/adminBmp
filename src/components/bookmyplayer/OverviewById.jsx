@@ -213,6 +213,8 @@ const OverviewById = () => {
       // }
       )
       .then((response) => {
+        if (response?.data?.data && response?.data?.data?.length !== 0) 
+        {
         const sport = response?.data?.data[0]?.sport;
         const academyName = response?.data?.data[0]?.name;
         const cityName = response?.data?.data[0]?.city;
@@ -270,6 +272,7 @@ const OverviewById = () => {
           setMappedLanguages([...newLanguage]);
         }
         setIsLoading(false);
+      }
       })
       .catch((error) => {
         // console.log(error);
