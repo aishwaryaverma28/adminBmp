@@ -1321,7 +1321,7 @@ const OverviewById = () => {
                   }`}>
                   {mappedLanguage.language}
                 </p>{
-                  status === 0 && role_name === "academy" ? (
+                  status === 0 && role_name === ('academy' || 'player') ? (
                     <img src={Dash2} alt="" />
                   ) : (
                     <img src={Dash} alt="" onClick={() => handleDeleteLanguage(index)} />
