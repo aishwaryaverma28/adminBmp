@@ -27,7 +27,7 @@ const Opening = () => {
                 localStorage.setItem("academy_id", data?.parent_id);
                 localStorage.setItem("id", id);
                 if (role === "academy") {
-                    const permissions = "/bmp,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/support,/bmp/settings,/bmp/settings/review/view,/bmp/settings/tournament/add,/bmp/settings/tournament/view";
+                    const permissions = "/bmp,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/support,/bmp/settings,/bmp/settings/review/view,/bmp/settings/blog/add,/bmp/settings/blog/view,/bmp/settings/tournament/add,/bmp/settings/tournament/view";
                     const userPath = permissions.split(",");
                     const userPathTot = userPath.join(",");
                     const encryptedUserPathTot = CryptoJS.AES.encrypt(

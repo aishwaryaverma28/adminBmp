@@ -25,6 +25,9 @@ import Approval from "./components/bookmyplayer/Approval";
 import BMPLeads from "./components/bookmyplayer/BMPLeads";
 import SupportTab from "./components/settings/SupportTab";
 import BmpAdmin from "./components/bookmyplayer/BmpAdmin.jsx"
+import BlogAdd from "./components/master-settings/BlogAdd.jsx";
+import BlogView from "./components/master-settings/BlogView.jsx";
+import BlogUpdate from "./components/master-settings/BlogUpdate.jsx";
 const router = createBrowserRouter([
   {
     path: "/:source/:id",
@@ -107,6 +110,18 @@ const router = createBrowserRouter([
           {
             path: "/bmp/settings/tournament/view/:id",
             element: <UpdateTournament />,
+          },
+          {
+            path: "/bmp/settings/blog/add",
+            element: <SecureRoutes Component={BlogAdd} />,
+          },
+          {
+            path: "/bmp/settings/blog/view",
+            element: <SecureRoutes Component={BlogView} />,
+          },
+          {
+            path: "/bmp/settings/blog/view/:id",
+            element: <BlogUpdate />,
           },
 
           {
