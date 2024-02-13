@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.0c22571c.css",
-    "main.js": "/static/js/main.1d3c070e.js",
+    "main.js": "/static/js/main.c1bc67c0.js",
     "static/media/whatsapp.png": "/static/media/whatsapp.4b37dbe87e980c9d4045.png",
     "static/media/map.png": "/static/media/map.bababdcb453c287e2af2.png",
     "static/media/player.png": "/static/media/player.76919bb8149cca326280.png",
@@ -11,6 +11,7 @@
     "static/media/logo_bmp.svg": "/static/media/logo_bmp.ecf84efc9f16787f2449e4ac9584bcec.svg",
     "static/media/loader.gif": "/static/media/loader.bb6ec0127478281cc265.gif",
     "static/media/calendar.svg": "/static/media/calendar.61918c5c96ba9fa2cd99af5cb3c68538.svg",
+    "static/media/whatsapp.svg": "/static/media/whatsapp.520744a3ab71241d60eeab739604c77f.svg",
     "static/media/time-blue.svg": "/static/media/time-blue.fbb92ac834a4c162dde60fef41b3ff32.svg",
     "static/media/time.svg": "/static/media/time.245fbc940075c22fbf2ceba5bbaff155.svg",
     "static/media/TrashFill.svg": "/static/media/TrashFill.8c4c960f9dcf04fe49bbcab8b9e6e685.svg",
@@ -42,10 +43,10 @@
     "static/media/red-dash.svg": "/static/media/red-dash.5111f1408f8f65b6b62cfc413440f1e6.svg",
     "static/media/bluedot.svg": "/static/media/bluedot.8d480cafc752076cfa9b3ffc75b9a1c2.svg",
     "main.0c22571c.css.map": "/static/css/main.0c22571c.css.map",
-    "main.1d3c070e.js.map": "/static/js/main.1d3c070e.js.map"
+    "main.c1bc67c0.js.map": "/static/js/main.c1bc67c0.js.map"
   },
   "entrypoints": [
     "static/css/main.0c22571c.css",
-    "static/js/main.1d3c070e.js"
+    "static/js/main.c1bc67c0.js"
   ]
 }
