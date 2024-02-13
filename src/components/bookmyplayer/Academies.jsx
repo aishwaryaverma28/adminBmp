@@ -154,12 +154,12 @@ const Academies = () => {
                   {filteredData.map((data) => (
                     <tr key={data?.id}>
                       <td>
-                        <Link to={"/bmp/academy/overview" + data?.id}>
+                        <Link to={"/bmp/academy/overview/" + data?.id}>
                           {data?.id}
                         </Link>
                       </td>
                       <td>
-                        <Link to={"/bmp/academy/overview" + data?.id}>
+                        <Link to={"/bmp/academy/overview/" + data?.id}>
                           <div className='academy_new_blue_logo'>
                             <img src={Logo} alt="" />
                             <p> {data?.name}</p>
