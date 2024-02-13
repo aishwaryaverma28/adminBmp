@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
-import { ADD_TICKET, BMP_USER,handleLogout, getDecryptedToken, USER_INFO } from "./utils/Constants";
+import { ADD_TICKET, BMP_USER,handleLogout, getDecryptedToken } from "./utils/Constants";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
