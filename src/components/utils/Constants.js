@@ -36,15 +36,15 @@ export { getDecryptedUserPath };
 export const handleLogout = () => {
   if (landingUrl === "/bmp/academy/overview" || landingUrl === "/bmp/admin") {
     localStorage.clear();
-    window.location.href = "https://www.bookmyplayer.com/front/logout";
+    window.location.href = "https://www.bookmyplayer.com/profile/logout";
   } else {
     localStorage.clear();
     window.location.href = "https://core.leadplaner.com/login";
   }
 };
 // =============================================================apis used
-// const start = "https://core.leadplaner.com/api/api";
-const start = "http://localhost:4000/api";
+const start = "https://bmp.leadplaner.com/api/api";
+// const start = "http://localhost:4000/api";
 const userId = localStorage.getItem("id");
 export const USER_INFO = start + "/user/getuserinfo";
 export const BMP_USER = start + "/bmp/getUser";

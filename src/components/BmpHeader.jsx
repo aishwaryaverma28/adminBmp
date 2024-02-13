@@ -103,7 +103,7 @@ const BmpHeader = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    window.location.href = "https://www.bookmyplayer.com/front/logout";
+    window.location.href = "https://www.bookmyplayer.com/profile/logout";
   };
   const handleViewSite = (e) => {
     e.preventDefault();
