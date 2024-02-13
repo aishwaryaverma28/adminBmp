@@ -1178,3 +1178,16 @@ margin-right: 0.3rem;
  .reason_for{
   margin-bottom: 1rem;
  }
+
+ .whatsapp_btn {
+  position: fixed;
+  bottom: 4%;
+  left: 2%;
+}
+
+.whatsapp_btn img{
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
