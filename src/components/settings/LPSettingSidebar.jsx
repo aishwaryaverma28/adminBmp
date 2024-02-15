@@ -130,6 +130,37 @@ const LPSettingSidebar = () => {
                   )}
                 </div>
               )}
+
+              
+      <div className="master-arrow" onClick={() => toggleMasterSubMenu("blog")}>
+        <p className="company-options master-settings-options setting-font-style">
+          Blog
+        </p>
+        <img src={masterSubMenu === "blog" ? GreaterUp : GreaterDown} alt="" />
+      </div>
+
+      {masterSubMenu === "blog" && (
+            <div className="sub-sub-menu">
+                <p className="company-options setting-font-style blog-options">
+                  <NavLink
+                    exact
+                    to="/bmp/settings/blog/add"
+                    activeClassName="activeLink"
+                  >
+                    Add
+                  </NavLink>
+                </p>
+                <p className="company-options setting-font-style">
+                  <NavLink
+                    exact
+                    to="/bmp/settings/blog/view"
+                    activeClassName="activeLink"
+                  >
+                    View
+                  </NavLink>
+                </p>
+            </div>
+          )}
             </>
           )}
 
