@@ -226,12 +226,11 @@ const BmpOverview = () => {
 
   const academyDetails = () => {
     axios
-      .post(GET_ACADEMY, { academy_id: academyId }
-      //   , {
-      //   headers: {
-      //     Authorization: `Bearer ${decryptedToken}`,
-      //   },
-      // }
+      .post(GET_ACADEMY, { academy_id: academyId } , {
+        headers: {
+          Authorization: `Bearer ${decryptedToken}`,
+        },
+      }
       )
       .then((response) => {
         if (response?.data?.data && response?.data?.data?.length !== 0) 
@@ -569,12 +568,11 @@ const BmpOverview = () => {
     console.log("update body");
 
     axios
-      .post(UPDATE_ACADEMY_TABLE2, updatedFormData
-      //   , {
-      //   headers: {
-      //     Authorization: `Bearer ${decryptedToken}`,
-      //   },
-      // }
+      .post(UPDATE_ACADEMY_TABLE2, updatedFormData, {
+        headers: {
+          Authorization: `Bearer ${decryptedToken}`,
+        },
+      }
       )
       .then((response) => {
         if (response.data.status === 1) {

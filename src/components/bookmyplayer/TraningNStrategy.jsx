@@ -8,7 +8,6 @@ import StrategyModal from "./StrategyModal.jsx";
 import DeleteStrategyModal from "./DeleteStrategyModal.jsx";
 import axios from "axios";
 import { UPDATE_ACADEMY, GET_ACADEMY
-  // , getDecryptedToken 
 } from "../utils/Constants";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,7 +18,7 @@ const TraningNStrategy = () => {
   const [openBatch, setOpenBatch] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  // const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const id = localStorage.getItem("academy_id");
   const [newData, setNewData] = useState("");
   const [strategyName, setStrategyName] = useState("");
@@ -74,12 +73,11 @@ const TraningNStrategy = () => {
       .put(UPDATE_ACADEMY + id, {
         strategy_name: updatedNameString,
         training_strategy: updatedDescriptionString,
+      }, {
+        headers: {
+          Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
+        },
       }
-      // , {
-      //   headers: {
-      //     Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
-      //   },
-      // }
       )
       .then((response) => {
         fetchAcademyDetails();
@@ -95,12 +93,11 @@ const TraningNStrategy = () => {
   
   const fetchAcademyDetails = () => {
     axios
-    .post(GET_ACADEMY, { academy_id: id }
-      //   , {
-      //   headers: {
-      //     Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
-      //   },
-      // }
+    .post(GET_ACADEMY, { academy_id: id }, {
+        headers: {
+          Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
+        },
+      }
       )
       .then((response) => {
         setProgress(response?.data?.data[0]?.completion_percentage);

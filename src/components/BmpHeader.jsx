@@ -7,7 +7,6 @@ import logo_bmp from "../assets/image/logo_bmp.svg";
 import axios from "axios";
 import {
   BMP_USER,
-  getDecryptedToken,
   getDecryptedUserPath,
 } from "./utils/Constants";
 import HelpModal from "./HelpModal";
@@ -27,7 +26,7 @@ const BmpHeader = () => {
   const [clientData, setClientData] = useState(null);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [isNotifyModalOpen, setIsNotifyModalOpen] = useState(false);
-   // const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const decryptedUserPath = getDecryptedUserPath();
   const [number, setNumber] = useState(null);
   let allowed = decryptedUserPath.split(",");
@@ -45,12 +44,11 @@ const BmpHeader = () => {
       userId: userId,
     };
     try {
-      const response = await axios.post(BMP_USER, body
-      //   , {
-      //   headers: {
-      //     Authorization: `Bearer ${decryptedToken}`,
-      //   },
-      // }
+      const response = await axios.post(BMP_USER, body, {
+        headers: {
+          Authorization: `Bearer ${decryptedToken}`,
+        },
+      }
       );
       const data = response?.data?.user;
       // console.log(data);
