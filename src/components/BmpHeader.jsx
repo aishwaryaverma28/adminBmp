@@ -10,7 +10,6 @@ import {
   getDecryptedUserPath,
 } from "./utils/Constants";
 import HelpModal from "./HelpModal";
-import NotificationModal from "./NotificationModal.jsx";
 import { useDispatch } from "react-redux";
 import { addItem } from "./utils/userInfoSlice.js";
 const BmpHeader = () => {
@@ -246,7 +245,6 @@ const BmpHeader = () => {
       {/* Top Navigation End  */}
 
       {isHelpModalOpen && <HelpModal onClose={closeHelpModal} />}
-      {isNotifyModalOpen && <NotificationModal onClose={handleBellCLose} />}
     </>
   );
 };
