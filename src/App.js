@@ -19,16 +19,22 @@ import BmpOverview from "./components/bookmyplayer/BmpOverview.jsx";
 import OverviewById from "./components/bookmyplayer/OverviewById.jsx";
 import FeesNBatches from "./components/bookmyplayer/FeesNBatches";
 import TraningNStrategy from "./components/bookmyplayer/TraningNStrategy";
-import Gallery from "./components/bookmyplayer/Gallery.jsx"
+import Gallery from "./components/bookmyplayer/Gallery.jsx";
 import Review from "./components/bookmyplayer/Review.jsx";
 import Approval from "./components/bookmyplayer/Approval";
 import BMPLeads from "./components/bookmyplayer/BMPLeads";
 import SupportTab from "./components/settings/SupportTab";
-import BmpAdmin from "./components/bookmyplayer/BmpAdmin.jsx"
+import BmpAdmin from "./components/bookmyplayer/BmpAdmin.jsx";
 import BlogAdd from "./components/master-settings/BlogAdd.jsx";
 import BlogView from "./components/master-settings/BlogView.jsx";
 import BlogUpdate from "./components/master-settings/BlogUpdate.jsx";
+import Testing from "./components/Testing.jsx";
 const router = createBrowserRouter([
+  {
+    path: "/authenticate/:auth",
+    element: <Testing />,
+    errorElement: <Error />,
+  },
   {
     path: "/:source/:id",
     element: <Opening />,
@@ -53,41 +59,41 @@ const router = createBrowserRouter([
             element: <Navigate to="/bmp/academy/overview" replace />,
           },
           {
-            path:"/bmp/academy/overview",
-            element:<SecureRoutes Component={BmpOverview}/>,
+            path: "/bmp/academy/overview",
+            element: <SecureRoutes Component={BmpOverview} />,
           },
           {
             path: "/bmp/academy/overview/:id",
-            element: <OverviewById/>,
+            element: <OverviewById />,
           },
           {
-            path:"/bmp/academy/fees",
-            element:<SecureRoutes Component={FeesNBatches}/>,
+            path: "/bmp/academy/fees",
+            element: <SecureRoutes Component={FeesNBatches} />,
           },
           {
-            path:"/bmp/academy/training",
-            element:<SecureRoutes Component={TraningNStrategy}/>,
+            path: "/bmp/academy/training",
+            element: <SecureRoutes Component={TraningNStrategy} />,
           },
           {
-            path:"/bmp/academy/gallery",
-            element:<SecureRoutes Component={Gallery}/>,
+            path: "/bmp/academy/gallery",
+            element: <SecureRoutes Component={Gallery} />,
           },
           {
-            path:"/bmp/academy/reviews",
-            element:<SecureRoutes Component={Review}/>,
+            path: "/bmp/academy/reviews",
+            element: <SecureRoutes Component={Review} />,
           },
           {
-            path:"/bmp/academy/approval",
-            element:<Approval/>,
+            path: "/bmp/academy/approval",
+            element: <Approval />,
           },
           {
-            path:"/bmp/academy/leads",
-            element:<SecureRoutes Component={BMPLeads}/>,
+            path: "/bmp/academy/leads",
+            element: <SecureRoutes Component={BMPLeads} />,
           },
           {
-            path:"/bmp/academy/support",
+            path: "/bmp/academy/support",
             element: (
-              <div style={{ padding: '1rem' }}>
+              <div style={{ padding: "1rem" }}>
                 <SecureRoutes Component={SupportTab} />
               </div>
             ),

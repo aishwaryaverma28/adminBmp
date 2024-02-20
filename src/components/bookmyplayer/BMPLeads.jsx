@@ -2,16 +2,14 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import {
   GET_ACC_LEAD
-  // , getDecryptedToken,
-
-} from "../utils/Constants";
+ } from "../utils/Constants";
 import BMPLeadModal from './BMPLeadModal.jsx';
 import Calender from "../../assets/image/calendar.svg";
 import SearchIcon from "../../assets/image/search.svg";
 
 
 const BMPLeads = () => {
-  // const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const academyId = parseInt(localStorage.getItem("academy_id"));
   const [review, setReview] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,16 +27,12 @@ const BMPLeads = () => {
     return date.toLocaleDateString('en-US', options);
   };
 
-
   const filteredReviewData = review.filter((item) => {
     const fullName =item?.name?.toLowerCase() || "";
     const phone =item?.phone?.toLowerCase() || "";
     const description =item?.description?.toLowerCase() || "";
     const date = formatDate(item?.creation_date) || "";
     const searchReview = searchQuery.toLowerCase();
-
-
-    // Check if the search query matches any of the fields
     const matchesSearchQuery =
       fullName.includes(searchReview) ||
       phone.includes(searchReview) ||
@@ -55,18 +49,14 @@ const BMPLeads = () => {
 
   const closeModal = () => {
     setIsOpen(false);
-
  }
 
-
-
   const reviewData = () => {
-    axios.get(GET_ACC_LEAD +academyId+"/academy"
-    // , {
-    //   headers: {
-    //     Authorization: `Bearer ${decryptedToken}`,
-    //   },
-    // }
+    axios.get(GET_ACC_LEAD +academyId+"/academy", {
+      headers: {
+        Authorization: `Bearer ${decryptedToken}`,
+      },
+    }
     )
       .then((response) => {
         console.log(response?.data?.data)

@@ -1,14 +1,12 @@
 import React from 'react'
 import "../styles/Comment.css";
 import { useState } from 'react';
-import axios from 'axios';
-// import {getDecryptedToken} from "../utils/Constants";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from 'react';
 
 const BMPLeadModal = ({ onClose, item }) => {
-  // const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const academyId = localStorage.getItem("academy_id");
   const [isLoading, setIsLoading] = useState(true);
 

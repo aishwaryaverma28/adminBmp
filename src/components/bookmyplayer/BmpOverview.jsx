@@ -21,7 +21,7 @@ import { removeHtmlTags } from "./removeHtml";
 import { default_about } from "../utils/bmp_about";
 
 const BmpOverview = () => {
-  // const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const academyId = localStorage.getItem("academy_id");
   const role_name = localStorage.getItem("role_name");
   const [status, setStatus] = useState(null);
@@ -97,12 +97,11 @@ const BmpOverview = () => {
         GET_UPDATED_ACADEMY_INFO,
         {
           academy_id: academyId,
+        },{
+          headers: {
+            Authorization: `Bearer ${decryptedToken}`,
+          },
         }
-        // ,{
-        //   headers: {
-        //     Authorization: `Bearer ${decryptedToken}`,
-        //   },
-        // }
       )
       .then((response) => {
         const statusValue = response?.data?.data[0]?.status;

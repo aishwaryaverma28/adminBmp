@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AddBatch = ({ onClose, fetchBatch, array }) => {
-    // const decryptedToken = getDecryptedToken();
+    const decryptedToken = localStorage.getItem("jwtToken");
     const [selectedDays, setSelectedDays] = useState([]);
     const [batchTitle, setBatchTitle] = useState("");
     const [ageGroups, setAgeGroups] = useState([{ minAge: "", maxAge: "" }]);
@@ -184,11 +184,11 @@ const AddBatch = ({ onClose, fetchBatch, array }) => {
         }
         axios
             .post(ADD_BATCH, body
-            //     , {
-            //     headers: {
-            //         Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
-            //     },
-            // }
+                , {
+                headers: {
+                    Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
+                },
+            }
             )
             .then((response) => {
                 console.log(response)
@@ -229,11 +229,11 @@ const AddBatch = ({ onClose, fetchBatch, array }) => {
             .put(UPDATE_ACADEMY + id, {
                 completion_percentage: combinedProgress,
             }
-            // , {
-            //     headers: {
-            //         Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
-            //     },
-            // }
+            , {
+                headers: {
+                    Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
+                },
+            }
             )
             .then((response) => {
                 console.log(response);

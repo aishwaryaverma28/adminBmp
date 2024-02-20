@@ -8,7 +8,7 @@ import ApprovalModal from './ApprovalModal.jsx';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Approval = () => {
-  // const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const academyId = localStorage.getItem("academy_id");
@@ -29,12 +29,11 @@ const Approval = () => {
   const approvalData = () => {
     axios.post(GET_APPROVAL, {
       academy_id: academyId
+    }, {
+      headers: {
+        Authorization: `Bearer ${decryptedToken}`
+      }
     }
-    // , {
-    //   headers: {
-    //     Authorization: `Bearer ${decryptedToken}`
-    //   }
-    // }
     ).then((response) => {
       const newData = response?.data?.data.map((item) => {
         const hasOverview = [
@@ -111,13 +110,12 @@ const Approval = () => {
   }, []);
 
   const handleRevoke = () => {
-    axios.put(UPDATE_ACADMEY_STATUS + revokeId, { status: 3 }
-      // ,
-      // {
-      //   headers: {
-      //     Authorization: `Bearer ${decryptedToken}`
-      //   }
-      // }
+    axios.put(UPDATE_ACADMEY_STATUS + revokeId, { status: 3 },
+      {
+        headers: {
+          Authorization: `Bearer ${decryptedToken}`
+        }
+      }
       ).then((response) => {
         if (response?.data?.status === 1) {
           console.log(response?.data?.data)

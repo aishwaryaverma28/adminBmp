@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 
 const Academies = () => {
   const [activeTab, setActiveTab] = useState("all");
-  // const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const [data, setData] = useState([]);
   const [pendingData, setPendingData] = useState([]);
   const [rejectedData, setRejectedData] = useState([]);
@@ -26,12 +26,11 @@ const Academies = () => {
   const getAllAcademy = () => {
     axios.post(GET_ACADEMY_STATUS, {
       status: 4
+    }, {
+      headers: {
+        Authorization: `Bearer ${decryptedToken}`
+      }
     }
-    // , {
-    //   headers: {
-    //     Authorization: `Bearer ${decryptedToken}` // Include the JWT token in the Authorization header
-    //   }
-    // }
     ).then((response) => {
       setData(response?.data?.data);
     }).catch((error) => {
@@ -41,12 +40,11 @@ const Academies = () => {
   const getPendingAcademy = () => {
     axios.post(GET_ACADEMY_STATUS, {
       status: 0
+    }, {
+      headers: {
+        Authorization: `Bearer ${decryptedToken}`
+      }
     }
-    // , {
-    //   headers: {
-    //     Authorization: `Bearer ${decryptedToken}` // Include the JWT token in the Authorization header
-    //   }
-    // }
     ).then((response) => {
       setPendingData(response?.data?.data);
     }).catch((error) => {
@@ -56,12 +54,11 @@ const Academies = () => {
   const getRejectedAcademy = () => {
     axios.post(GET_ACADEMY_STATUS, {
       status: 2
+    },{
+      headers: {
+        Authorization: `Bearer ${decryptedToken}`
+      }
     }
-    // ,{
-    //   headers: {
-    //     Authorization: `Bearer ${decryptedToken}` // Include the JWT token in the Authorization header
-    //   }
-    // }
     ).then((response) => {
       setRejectedData(response?.data?.data);
     }).catch((error) => {

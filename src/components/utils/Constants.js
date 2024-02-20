@@ -1,23 +1,16 @@
 import CryptoJS from "crypto-js";
-// import { id } from 'date-fns/locale';
-
 const secretKey = "mySecretKey123";
-// const secretKey = "miyamura"; // Set your secret key for login
-
 const landingUrl = localStorage.getItem("landingUrl");
-
 const getDecryptedToken = () => {
   const encryptedToken = localStorage.getItem("jwtToken");
-
   if (encryptedToken) {
     const decryptedBytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
     return decryptedBytes.toString(CryptoJS.enc.Utf8);
   }
-
   return "";
 };
-
 export { getDecryptedToken };
+
 const getDecryptedUserPath = () => {
   const encryptedUserPathTot = localStorage.getItem("encryptedUserPathTot");
   if (encryptedUserPathTot) {

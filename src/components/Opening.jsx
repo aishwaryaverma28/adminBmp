@@ -19,7 +19,6 @@ const Opening = () => {
             const response = await axios.post(BMP_USER, body);
             const data = response?.data?.user;
             console.log(response);
-            // jwtToken(id, data?.name)
             if (response.data.status === 1) {
                 localStorage.setItem("org_id", data?.org_id);
                 let role = data?.type?.toLowerCase()
@@ -73,36 +72,6 @@ const Opening = () => {
     useEffect(() => {
         getBMPUser();
     }, []);
-
-    // ==============================================================================================jwt token generation
-    const jwtToken = (id, name) => {
-        const userPayload = {
-            userId: id,
-            username: name,
-        };
-        const secretKey = 'mySecretKey';
-
-        // Using a simplified encoding method without unnecessary characters
-        const encodedHeader = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).replace(/=+$/, '');
-        const encodedPayload = btoa(JSON.stringify(userPayload)).replace(/=+$/, '');
-
-        // Create the token by concatenating the encoded header, payload, and a signature (HMAC-SHA256 in this example)
-        const signature = btoa(
-            new TextEncoder().encode(encodedHeader + '.' + encodedPayload + secretKey)
-        ).replace(/=+$/, '');
-        const jwtToken = `${encodedHeader}.${encodedPayload}.${signature}`;
-        console.log('Generated JWT Token:', jwtToken);
-        decodedToken(jwtToken);
-    };
-
-    const decodedToken = (token) => {
-        const jwtToken = token;
-        const [encodedHeader, encodedPayload, signature] = jwtToken.split('.');
-        const decodedHeader = JSON.parse(atob(encodedHeader));
-        const decodedPayload = JSON.parse(atob(encodedPayload));
-        console.log('Decoded Header:', decodedHeader);
-        console.log('Decoded Payload:', decodedPayload)
-    }
 
     return (
         <>
