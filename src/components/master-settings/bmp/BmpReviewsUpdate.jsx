@@ -10,7 +10,7 @@ import arrowLeft from "../../../assets/image/arrow-left.svg";
 
 const BmpReviewsUpdate = () => {
   const { id } = useParams();
-  const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const [activeTab, setActiveTab] = useState("all");
   const [review, setReview] = useState([]);
   const [pendingData, setPendingData] = useState([]);

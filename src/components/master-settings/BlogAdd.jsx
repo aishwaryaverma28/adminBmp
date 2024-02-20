@@ -36,7 +36,7 @@ const BlogAdd = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [stateBtn, setStateBtn] = useState(0);
   const [category, setCategory] = useState([]);
-  const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const editorRef = useRef();
   const [formData, setFormData] = useState({
     title: "",

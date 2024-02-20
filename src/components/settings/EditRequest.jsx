@@ -6,7 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const EditRequest = ({ onClose, ticket }) => {
-  const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState("");
   const [stateBtn, setStateBtn] = useState(0);

@@ -9,7 +9,7 @@ import EditRequest from './EditRequest';
 
 const ServiceSupport = () => {
   const id = localStorage.getItem('id');
-  const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const [ticket, setTicket] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState(null); // State for selected ticket
   const [isServiceTabOpen, setIsServiceTabOpen] = useState(false);

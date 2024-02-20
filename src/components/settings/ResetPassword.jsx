@@ -21,7 +21,7 @@ const ResetPassword = ({ onClose, user }) => {
   const [hasSpecialCharacter, setHasSpecialCharacter] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const decryptedToken = getDecryptedToken();
+  const decryptedToken =localStorage.getItem("jwtToken");
   const orgId = localStorage.getItem("org_id");
   const email = localStorage.getItem("email");
 

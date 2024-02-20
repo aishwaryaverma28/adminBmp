@@ -6,7 +6,7 @@ import Trash from "../../../assets/image/red-bin.svg";
 import { toast, ToastContainer } from "react-toastify";
 
 const TournamentModal = ({ onClose, id }) => {
-  const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const [stateBtn, setStateBtn] = useState(0);
   //==============================================multiple photo upload
   const fileInputRef = useRef(null);

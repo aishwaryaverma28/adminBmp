@@ -10,7 +10,7 @@ import ApproveReview from './ApproveReview.jsx';
 
 const BmpReviewsView = () => {
   const [activeTab, setActiveTab] = useState("all");
-  const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const [data, setData] = useState([]);
   const [pendingData, setPendingData] = useState([]);
   const [approveData, setApproveData] = useState([]);

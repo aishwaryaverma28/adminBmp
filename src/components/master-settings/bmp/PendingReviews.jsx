@@ -6,7 +6,7 @@ import Logo from "../../../assets/image/blue_logo.png";
 import { Link } from 'react-router-dom';
 
 const PendingReviews = () => {
-    const decryptedToken = getDecryptedToken();
+    const decryptedToken = localStorage.getItem("jwtToken");
     const [data, setData] = useState([]);
     const [searchInput, setSearchInput] = useState("");
     const getAllAcademy = () => {

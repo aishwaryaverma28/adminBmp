@@ -5,7 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import TournamentModal from "./TournamentModal.jsx";
 const AddTournament = () => {
-  const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const [open, setOpen] = useState(false);
   const [id, setId] = useState(0);
   const [stateBtn, setStateBtn] = useState(0);
