@@ -4,7 +4,7 @@ import ErrorImg from "../assets/image/404.jpg";
 
 const Error = () => {
   const handleGoBack = () => {
-    window.history.back(); // Navigate back in the browser history
+    window.history.back();
   };
   return (
     <section className="lead-error-page">

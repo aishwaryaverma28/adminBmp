@@ -3,12 +3,11 @@ import SearchIcon from "../assets/image/search.svg";
 import axios from "axios";
 import {
   GET_ALL_SEARCH,
-  getDecryptedToken,
   handleLogout,
 } from "./utils/Constants";
 
 const QuestionTab = () => {
-  const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchResult, setShowSearchResult] = useState(false);
   const [data, setData] = useState([]);

@@ -2,14 +2,13 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import {
   GET_ALL_REVIEW, GET_ACC_REVIEW
-  // , getDecryptedToken
 } from "../utils/Constants";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import star from "../../assets/image/star.svg"
 import Comment from './Comment';
 const Review = () => {
-  // const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const academyId = localStorage.getItem("academy_id");
   const [review, setReview] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,11 +28,11 @@ const Review = () => {
       status:1
     }
     axios.post(GET_ALL_REVIEW, body
-    //   , {
-    //   headers: {
-    //     Authorization: `Bearer ${decryptedToken}`,
-    //   },
-    // }
+      , {
+      headers: {
+        Authorization: `Bearer ${decryptedToken}`,
+      },
+    }
     )
       .then((response) => {
         // console.log(response?.data?.data)
@@ -53,12 +52,11 @@ const Review = () => {
       object_id: parseInt(academyId),
       object_type: "academy"
     }
-    axios.post(GET_ACC_REVIEW, body
-    //   , {
-    //   headers: {
-    //     Authorization: `Bearer ${decryptedToken}`,
-    //   },
-    // }
+    axios.post(GET_ACC_REVIEW, body, {
+      headers: {
+        Authorization: `Bearer ${decryptedToken}`,
+      },
+    }
     )
       .then((response) => {
         if (response?.data?.status === 1) {

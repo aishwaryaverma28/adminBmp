@@ -9,6 +9,7 @@ import {
   GET_ACADEMY
 } from "../utils/Constants";
 const BmpSidebar = () => {
+  const decryptedToken = localStorage.getItem("jwtToken");
   const userRole = localStorage.getItem("role_name");
   const navigate = useNavigate();
   const id = localStorage.getItem("academy_id");
@@ -21,12 +22,11 @@ const [details, setDetails]= useState(null);
 
   const academyDetails = () => {
     axios
-      .post(GET_ACADEMY, { academy_id: newId }
-      //   , {
-      //   headers: {
-      //     Authorization: `Bearer ${decryptedToken}`,
-      //   },
-      // }
+      .post(GET_ACADEMY, { academy_id: newId }, {
+        headers: {
+          Authorization: `Bearer ${decryptedToken}`,
+        },
+      }
       )
       .then((response) => {
         console.log(response?.data?.data);

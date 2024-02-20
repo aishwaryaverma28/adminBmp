@@ -62,8 +62,7 @@ const TickIcon = () => {
 
   const handleSuccess = () => {
     setIsSuccess(true);
-    // You can trigger the successful completion of the process here or from the parent component.
-  };
+    };
 
   return (
     <div className="time-container">
@@ -272,11 +271,6 @@ const TickIcon = () => {
             )
           })
       }
-
-      {/* <div className="time-bottom-btn">
-      <button className="common-delete-button">Cancel</button>
-      <button className="common-save-button time-save">Save</button>
-    </div> */}
     </div>
   );
 };

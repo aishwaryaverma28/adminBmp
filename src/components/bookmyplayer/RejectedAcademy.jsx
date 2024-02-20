@@ -2,24 +2,22 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { GET_ACADEMY_STATUS
-  // , getDecryptedToken
  } from '../utils/Constants.js';
 import SearchIcon from "../../assets/image/search.svg";
 import Logo from "../../assets/image/blue_logo.png";
 import { Link } from 'react-router-dom';
 const RejectedAcademy = () => {
-  // const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const [data, setData] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const getAllAcademy = () => {
     axios.post(GET_ACADEMY_STATUS, {
       status: 2
+    }, {
+      headers: {
+        Authorization: `Bearer ${decryptedToken}`
+      }
     }
-    // , {
-    //   headers: {
-    //     Authorization: `Bearer ${decryptedToken}` // Include the JWT token in the Authorization header
-    //   }
-    // }
     ).then((response) => {
       setData(response?.data?.data);
     }).catch((error) => {

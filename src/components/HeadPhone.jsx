@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
-import { ADD_TICKET, BMP_USER,handleLogout, getDecryptedToken } from "./utils/Constants";
+import { ADD_TICKET, BMP_USER,handleLogout} from "./utils/Constants";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -8,7 +8,7 @@ const HeadPhone = () => {
    const userId = localStorage.getItem("id");
    const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState("");
-  const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const [stateBtn, setStateBtn] = useState(0);
   const [details, setDetails] = useState({
     title: "",
@@ -29,7 +29,7 @@ const HeadPhone = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
+            Authorization: `Bearer ${decryptedToken}`,
           },
         }
       );
@@ -60,7 +60,6 @@ const HeadPhone = () => {
     const file = event.target.files[0];
     if (file) {
       setFileName(file.name);
-      // You can upload the file to the server here using APIs, if needed.
     }
   };
 
@@ -81,7 +80,7 @@ const HeadPhone = () => {
     axios
       .post(ADD_TICKET, details, {
         headers: {
-          Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
+          Authorization: `Bearer ${decryptedToken}`, 
         },
       })
       .then((response) => {

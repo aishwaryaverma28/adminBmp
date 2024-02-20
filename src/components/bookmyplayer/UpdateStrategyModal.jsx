@@ -2,15 +2,12 @@ import React, { useState, useEffect } from "react";
 import "../styles/HelpModal.css";
 import axios from "axios";
 import { UPDATE_ACADEMY, RESTRICTED_KEYWORDS
-  // , getDecryptedToken
  } from "../utils/Constants";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const UpdateStrategyModal = ({ onClose,fetchData, updateIndex, name, description}) => {
-console.log(name);
-console.log(description)
-  // const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const academyId = localStorage.getItem("academy_id");
   const [stateBtn, setStateBtn] = useState(0);
   const [sName, setSName] = useState(name[updateIndex]);
@@ -106,13 +103,12 @@ console.log(description)
         {
           strategy_name: updatedNameString,
           training_strategy: updatedDescriptionString,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${decryptedToken}`,
+          }
         }
-        // ,
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${decryptedToken}`,
-        //   }
-        // }
       )
       .then((response) => {
         fetchData();
