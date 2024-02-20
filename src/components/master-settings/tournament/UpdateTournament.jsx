@@ -9,7 +9,7 @@ import LeftArrow from "../../../assets/image/arrow-left.svg";
 import Trash from "../../../assets/image/red-bin.svg"
 const UpdateTournament = () => {
     const { id } = useParams();
-    const decryptedToken = getDecryptedToken();
+    const decryptedToken = localStorage.getItem("jwtToken");
     //==============================================multiple photo upload
     const fileInputRef = useRef(null);
     const [photoUrls, setPhotoUrls] = useState([]);

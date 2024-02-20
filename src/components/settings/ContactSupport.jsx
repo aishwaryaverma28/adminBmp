@@ -14,7 +14,7 @@ const ContactSupport = () => {
   const userId = localStorage.getItem("id");
   const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState("");
-  const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   const [stateBtn, setStateBtn] = useState(0);
   const [details, setDetails] = useState({
     title: "",
@@ -31,11 +31,11 @@ async function getBMPUser() {
   };
   try {
     const response = await axios.post(BMP_USER, body
-    //   , {
-    //   headers: {
-    //     Authorization: `Bearer ${decryptedToken}`,
-    //   },
-    // }
+      , {
+      headers: {
+        Authorization: `Bearer ${decryptedToken}`,
+      },
+    }
     );
     const data = response.data.user;
     console.log(data);

@@ -8,7 +8,7 @@ import Pen from "../../../assets/image/small-pen.svg";
 import { useSelector } from "react-redux";
 
 const ReviewPopup = ({ onClose, review, reviewData, academyId }) => {
-    const decryptedToken = getDecryptedToken();
+    const decryptedToken = localStorage.getItem("jwtToken");
     const userName = useSelector(store => store.user.items);
     const [reply, setReply] = useState("");
     const [isLoading, setIsLoading] = useState(true);

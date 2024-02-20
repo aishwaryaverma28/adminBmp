@@ -33,7 +33,7 @@ const BlogUpdate = () => {
   // const [childData, setChildData] = useState("");
   // const [selectedImage, setSelectedImage] = useState(null);
   // const [showEditButton, setShowEditButton] = useState(false);
-  const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
   // tags states
   const [selectedTags, setSelectedTags] = useState([]);
   const [tagId, setTagId] = useState("");

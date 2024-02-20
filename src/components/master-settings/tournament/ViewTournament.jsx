@@ -9,7 +9,7 @@ const ViewTournament = () => {
   const [value, setValue] = useState(10);
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const decryptedToken = getDecryptedToken();
+  const decryptedToken = localStorage.getItem("jwtToken");
 
   function handleFormSubmit() {
     axios
