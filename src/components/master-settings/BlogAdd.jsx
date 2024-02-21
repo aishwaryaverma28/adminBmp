@@ -13,6 +13,8 @@ import ReactEditor from "../ReactEditor";
 import trash from "../../assets/image/delete-icon.svg";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DynamicTable from "./blog/DynamicTable";
+import Table from "./blog/Table";
 
 const BlogAdd = () => {
   const org_id = localStorage.getItem("org_id");
@@ -29,6 +31,8 @@ const BlogAdd = () => {
   const [dataFromChild, setDataFromChild] = useState("");
   const [isIndex, setIsIndex] = useState(-1);
   const [sectionData, setSectionData] = useState([]);
+  const [dataFromTable, setDataFromTable] = useState([]);
+  const [tableData, setTableDate] = useState(false)
   // tags states
   const [selectedTags, setSelectedTags] = useState([]);
   const [tagId, setTagId] = useState("");
@@ -36,12 +40,12 @@ const BlogAdd = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [stateBtn, setStateBtn] = useState(0);
   const [category, setCategory] = useState([]);
-  const decryptedToken = localStorage.getItem("jwtToken");
+  const decryptedToken = getDecryptedToken();
   const editorRef = useRef();
   const [formData, setFormData] = useState({
     title: "",
     url: "",
-    sport:"",
+    sport: "",
     description: "",
     meta_description: "",
     keywords: "",
@@ -69,7 +73,7 @@ const BlogAdd = () => {
 
   const getTagBySite = (site) => {
     axios
-      .get(GET_TAG_BY_SITE + site +"/"+org_id, {
+      .get(GET_TAG_BY_SITE + site + "/" + org_id, {
         headers: {
           Authorization: `Bearer ${decryptedToken}`,
         },
@@ -197,7 +201,7 @@ const BlogAdd = () => {
         return { ...prev, keywords: modifiedValue };
       });
     }
-   
+
     setStateBtn(1);
   }
 
@@ -232,35 +236,57 @@ const BlogAdd = () => {
     setSectionData(newSectionData);
     setStateBtn(1);
   };
+  const handleTableChange = (data, index) => {
+    const newSectionData = [...sectionData];
+    newSectionData[index].data_table = data.map(row => [...row]);
+    setSectionData(newSectionData);
+    setStateBtn(1);
+};
+
 
   //======================================================================================= sort and title data change
   const handleTitle = (event) => {
     const title = event.target.value;
     setSectionTitle(title);
     setStateBtn(1);
+    setTableDate(false);
   };
 
   const handleSecSortChange = (event) => {
     const newValue = event.target.value;
     setSectionSort(newValue === "" ? null : parseInt(newValue, 10));
     setStateBtn(1);
+    setTableDate(false);
+  };
+
+  //===========================================================================================table data
+  const handleDataSave = (data) => {
+    setTableDate(false);
+    setDataFromTable(data);
+    setStateBtn(1);
   };
   //=======================================================================================editor data transfer
   const handleDataTransfer = (data) => {
+    setTableDate(false);
     setDataFromChild(data);
     setStateBtn(1);
   };
 
   const removeHtmlTags = (htmlString) => {
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = htmlString;
-    return tempDiv.textContent || tempDiv.innerText || "";
+    //   const tempDiv = document.createElement("div");
+    //   tempDiv.innerHTML = htmlString;
+    //   return tempDiv.textContent || tempDiv.innerText || "";
+          const regex = /<(?!\/?a\s*\/?)[^>]*>/g;
+      return htmlString.replace(regex, '');
   };
+
   //====================================================================================== handle section data in an array of objects
 
   const handleAddSection = (e) => {
     e.preventDefault();
+    console.log(dataFromChild)
     const plainText = removeHtmlTags(dataFromChild);
+    console.log(plainText)
     const newSection = {
       heading: sectionTitle,
       sort: sectionSort === null ? 1 : parseInt(sectionSort),
@@ -268,7 +294,9 @@ const BlogAdd = () => {
       section: plainText,
       site: "",
       alt: "",
+      data_table: dataFromTable,
     };
+    
     setSectionData([...sectionData, newSection]);
     setSectionTitle("");
     setSectionSort(sectionSort === null ? 2 : parseInt(sectionSort) + 1);
@@ -276,6 +304,8 @@ const BlogAdd = () => {
     setStateBtn(1);
     setBlogImg2("");
     editorRef.current.clearEditorContent();
+    setDataFromTable([]);
+    setTableDate(true);
   };
   // =====================================================================================delete the targeted section
   const handleDeleteSection = (index) => {
@@ -297,7 +327,7 @@ const BlogAdd = () => {
       ...formData,
       title: "",
       url: "",
-      sport:"",
+      sport: "",
       description: "",
       meta_description: "",
       keywords: "",
@@ -321,7 +351,7 @@ const BlogAdd = () => {
       tag: tagId,
       image: blogImg,
       date: selectedDate,
-      sections: sectionData,
+      // sections: sectionData,
       site: selectSite,
       route: formData?.url,
       alt: "",
@@ -489,15 +519,15 @@ const BlogAdd = () => {
                     Add Image
                   </button>
                   <div className="blog-new-img">
-                  {blogImg ? blogImg : <></>}
+                    {blogImg ? blogImg : <></>}
                   </div>
-                  
+
                 </div>
               </div>
             </div>
             <div className="from-filed">
               <label htmlFor="title" className="common-fonts blogs-new-label">
-                description
+                Description
                 <span className="common-fonts redAlert"> *</span>
               </label>
               <input
@@ -513,14 +543,43 @@ const BlogAdd = () => {
               <label htmlFor="sport" className="common-fonts blogs-new-label">
                 Blog Sport
               </label>
-              <input
-                type="text"
-                name="sport"
+              <input list="sports" name="sport"
                 id="sport"
                 placeholder="Enter Blog Sport"
                 value={formData?.sport}
-                onChange={handleChange}
-              />
+                onChange={handleChange} />
+              <datalist id="sports">
+                <option value="archery"></option>
+                <option value="arts"></option>
+                <option value="athletics"></option>
+                <option value="badminton"></option>
+                <option value="basketball"></option>
+                <option value="billiards"></option>
+                <option value="boxing"></option>
+                <option value="chess"></option>
+                <option value="cricket"></option>
+                <option value="fencing"></option>
+                <option value="football"></option>
+                <option value="golf"></option>
+                <option value="hockey"></option>
+                <option value="kabaddi"></option>
+                <option value="karate"></option>
+                <option value="kho-kho"></option>
+                <option value="mma"></option>
+                <option value="motorsports"></option>
+                <option value="rugby"></option>
+                <option value="shooting"></option>
+                <option value="skating"></option>
+                <option value="sports"></option>
+                <option value="squash"></option>
+                <option value="swimming"></option>
+                <option value="table-Tennis"></option>
+                <option value="taekwondo"></option>
+                <option value="tennis"></option>
+                <option value="volleyball"></option>
+                <option value="wrestling"></option>
+              </datalist>
+
             </div>
             <div className="from-filed">
               <label htmlFor="title" className="common-fonts blogs-new-label">
@@ -612,7 +671,7 @@ const BlogAdd = () => {
                         Add Image
                       </button>
                       <div className="blog-new-img"> {blogImg2 ? blogImg2 : <></>}</div>
-                     
+
                     </div>
                     <button
                       onClick={handleAddSection}
@@ -623,7 +682,7 @@ const BlogAdd = () => {
                     </button>
                   </div>
                 </div>
-
+                <Table onDataSave={handleDataSave} tableFlag = {tableData}/>
                 <div className="formEditor">
                   <ReactEditor
                     ref={editorRef} // Add this line
@@ -631,93 +690,93 @@ const BlogAdd = () => {
                   />
                 </div>
               </div>
-
-              {sectionData?.map((section, index) => (
-                <div key={index} className={`section ${index === 0 ? 'first-section' : ''}`}>
-                  <div
-                    className="sectionDropdown"
-                    onClick={() => accordianClick(index)}
-                  >
-                    <div className="accHead">
-                      <h3>{section?.sort}</h3>
-                      <h3>{section?.heading}</h3>
+              <div>
+                {sectionData?.map((section, index) => (
+                  <div key={index} className={`section ${index === 0 ? 'first-section' : ''}`}>
+                    <div
+                      className="sectionDropdown"
+                      onClick={() => accordianClick(index)}
+                    >
+                      <div className="accHead">
+                        <h3>{section?.sort}</h3>
+                        <h3>{section?.heading}</h3>
+                      </div>
+                      {isIndex === index ? (
+                        <span>
+                          <i class="fa-sharp fa-solid fa-minus"></i>
+                        </span>
+                      ) : (
+                        <span>
+                          <i className="fa-sharp fa-solid fa-plus"></i>
+                        </span>
+                      )}
                     </div>
-                    {isIndex === index ? (
-                      <span>
-                        <i class="fa-sharp fa-solid fa-minus"></i>
-                      </span>
-                    ) : (
-                      <span>
-                        <i className="fa-sharp fa-solid fa-plus"></i>
-                      </span>
-                    )}
-                  </div>
-                  <div
-                    className={
-                      isIndex === index ? "answer display_answer" : "answer"
-                    }
-                  >
-                    <div className="sectionBlockOne">
-                      <input
-                        type="text"
-                        name="Sort"
-                        id="Sort"
-                        placeholder="Sort"
-                        className="SubsectionSort"
-                        value={section?.sort}
-                        onChange={(event) => handleSortChange(event, index)}
-                      />
-                      <input
-                        type="text"
-                        name="heading"
-                        id="heading"
-                        placeholder="Section Title"
-                        className="sectionHead"
-                        value={section?.heading}
-                        onChange={(event) => handleSecTitleChange(event, index)}
-                      />
+                    <div
+                      className={
+                        isIndex === index ? "answer display_answer" : "answer"
+                      }
+                    >
+                      <div className="sectionBlockOne">
+                        <input
+                          type="text"
+                          name="Sort"
+                          id="Sort"
+                          placeholder="Sort"
+                          className="SubsectionSort"
+                          value={section?.sort}
+                          onChange={(event) => handleSortChange(event, index)}
+                        />
+                        <input
+                          type="text"
+                          name="heading"
+                          id="heading"
+                          placeholder="Section Title"
+                          className="sectionHead"
+                          value={section?.heading}
+                          onChange={(event) => handleSecTitleChange(event, index)}
+                        />
 
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(event) => handleReplaceImage(event, index)}
-                        style={{ display: "none" }}
-                        ref={(input) => (fileInputRefs[index] = input)}
-                      />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(event) => handleReplaceImage(event, index)}
+                          style={{ display: "none" }}
+                          ref={(input) => (fileInputRefs[index] = input)}
+                        />
 
-                      <div className="blog-browse-img">
-                        <button
-                          className="common-fonts blog-add-img add-img-2"
-                          onClick={() => fileInputRefs[index].click()}
-                        >
-                          {section?.image ? " change image" : " add image"}
-                        </button>
-                        <div className="blog-new-img">
-                        {section?.image ? section?.image : <></>}
+                        <div className="blog-browse-img">
+                          <button
+                            className="common-fonts blog-add-img add-img-2"
+                            onClick={() => fileInputRefs[index].click()}
+                          >
+                            {section?.image ? " change image" : " add image"}
+                          </button>
+                          <div className="blog-new-img">
+                            {section?.image ? section?.image : <></>}
+                          </div>
                         </div>
-                        
+                      </div>
+                      <DynamicTable onDataSave={(data) => handleTableChange(data, index)} initialData={section.data_table} />
+                      <div className="formEditor">
+                        <ReactEditor
+                          onDataTransfer={(data) =>
+                            handleEditorChange(data, index)
+                          }
+                          initialContent={section?.section}
+                        />
+                      </div>
+                      <div className="deleteContainer">
+                        <button
+                          onClick={() => handleDeleteSection(index)}
+                          className="sectionDelete"
+                        >
+                          <img src={trash} className="deleteIcon" alt="Delete" />
+                        </button>
                       </div>
                     </div>
-
-                    <div className="formEditor">
-                      <ReactEditor
-                        onDataTransfer={(data) =>
-                          handleEditorChange(data, index)
-                        }
-                        initialContent={section?.section}
-                      />
-                    </div>
-                    <div className="deleteContainer">
-                      <button
-                        onClick={() => handleDeleteSection(index)}
-                        className="sectionDelete"
-                      >
-                        <img src={trash} className="deleteIcon" alt="Delete" />
-                      </button>
-                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </>
           </div>
           {/*==============================================================left side of form end here ============================================================*/}
@@ -746,12 +805,13 @@ const BlogAdd = () => {
                     name="tagDropdown"
                   >
                     <option value="">Select a tag</option>
-
-                    {options?.map((option) => (
-                      <option key={option?.id} value={option?.id}>
-                        {option?.tag}
-                      </option>
-                    ))}
+                    {options
+                      ?.filter(option => !tagId.split(",").includes(option.id.toString()))
+                      .map((option) => (
+                        <option key={option?.id} value={option?.id}>
+                          {option?.tag}
+                        </option>
+                      ))}
                   </select>
 
                   {/* <button onClick={AddTag} type="button" className="primaryBtn">
@@ -823,7 +883,7 @@ const BlogAdd = () => {
                 </div>
               </div>
               <div className="tagData tag-box tag-box-2">
-              <div className={selectSite ? 'tagItems' : ''}>{selectSite}</div>
+                <div className={selectSite ? 'tagItems' : ''}>{selectSite}</div>
 
               </div>
             </div>

@@ -18,6 +18,8 @@ import "../styles/BlogAdd.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LeftArrow from "../../assets/image/arrow-left.svg";
+import Table from "./blog/Table";
+import DynamicTable from "./blog/DynamicTable";
 const BlogUpdate = () => {
   const { id } = useParams();
   const org_id = localStorage.getItem("org_id");
@@ -25,15 +27,14 @@ const BlogUpdate = () => {
   const [sectionTitle, setSectionTitle] = useState("");
   const [sectionSort, setSectionSort] = useState(null);
   const [dataFromChild, setDataFromChild] = useState("");
+  const [dataFromTable, setDataFromTable] = useState([]);
+  const [tableData, setTableDate] = useState(false);
   const [isIndex, setIsIndex] = useState(-1);
   const [options, setOptions] = useState([]);
   const fileInputRef2 = useRef(null);
   const fileInputRef3 = useRef(null);
   const fileInputRefs = useRef(null);
-  // const [childData, setChildData] = useState("");
-  // const [selectedImage, setSelectedImage] = useState(null);
-  // const [showEditButton, setShowEditButton] = useState(false);
-  const decryptedToken = localStorage.getItem("jwtToken");
+  const decryptedToken = getDecryptedToken();
   // tags states
   const [selectedTags, setSelectedTags] = useState([]);
   const [tagId, setTagId] = useState("");
@@ -72,11 +73,10 @@ const BlogUpdate = () => {
     axios
       .get(GET_TAG_CATEGORY + org_id, {
         headers: {
-          Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
+          Authorization: `Bearer ${decryptedToken}`,
         },
       })
       .then((response) => {
-        console.log(response)
         setCategory(response?.data?.data);
       })
       .catch((error) => {
@@ -86,7 +86,7 @@ const BlogUpdate = () => {
 
   const handleUpdateClick = (id) => {
     const updatedSection = sectionData.find((section) => section.id === id);
-
+    console.log(updatedSection);
     if (!updatedSection) {
       console.error(`Section with id ${id} not found.`);
       return;
@@ -98,8 +98,8 @@ const BlogUpdate = () => {
       image: updatedSection.image,
       section: plainText,
       blogid: updatedSection.blogid,
+      data_table: JSON.stringify(updatedSection.data_table),
     };
-    console.log(updatedFormData);
     axios
       .put(SEC_UPDATE + updatedSection.id, updatedFormData, {
         headers: {
@@ -125,7 +125,7 @@ const BlogUpdate = () => {
   };
   const formatDateForInput = (timestamp) => {
     const utcDate = new Date(timestamp);
-    const istDate = new Date(utcDate.getTime() + (5.5 * 60 * 60 * 1000));
+    const istDate = new Date(utcDate.getTime() + 5.5 * 60 * 60 * 1000);
     const formattedDate = istDate.toISOString().split("T")[0];
     return formattedDate;
   };
@@ -159,17 +159,29 @@ const BlogUpdate = () => {
       setSelectSite(data?.site);
       // getTagBySite(data?.site);
     }
-    const secResponse = await axios.get(SEC_GET + id, {
-      headers: {
-        Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
-      },
-    });
-    const secData = secResponse.data.data;
-    const sectionDataWithoutDate = removeDateFromSectionData(secData);
-    setSectionData(sectionDataWithoutDate);
+    sectionResponse();
     tagData();
   }
-
+  const sectionResponse = () => {
+    axios
+      .get(SEC_GET + id, {
+        headers: {
+          Authorization: `Bearer ${decryptedToken}`,
+        },
+      })
+      .then((response) => {
+        const secData = response?.data?.data;
+        const sectionDataWithoutDate = removeDateFromSectionData(secData);
+        const tempSectionData = sectionDataWithoutDate.map((section) => ({
+          ...section,
+          data_table: JSON.parse(section.data_table),
+        }));
+        setSectionData(tempSectionData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const removeDateFromSectionData = (data) => {
     return data?.map((section) => {
       const { date, ...newSection } = section;
@@ -256,7 +268,10 @@ const BlogUpdate = () => {
         })
         .then((response) => {
           setOptions(
-            response?.data?.data?.map((item) => ({ id: item.id, tag: item.tag }))
+            response?.data?.data?.map((item) => ({
+              id: item.id,
+              tag: item.tag,
+            }))
           );
         })
         .catch((error) => {
@@ -324,27 +339,52 @@ const BlogUpdate = () => {
     setUpdateStateBtn(1);
   };
 
+  const handleTableChange = (data, index, id) => {
+    const newSectionData = [...sectionData];
+    const transposedData = transpose(data);
+    const filteredTransposedData = transposedData.filter((column) =>
+      column.some((cell) => cell !== "")
+    );
+    const filteredData = transpose(filteredTransposedData);
+    newSectionData[index].data_table = filteredData.map((row) => [...row]);
+    setSectionData(newSectionData);
+    setStateBtn(1);
+    handleUpdateClick(id);
+  };
+
+  // Function to transpose a 2D array
+  function transpose(matrix) {
+    return matrix[0].map((_, colIndex) => matrix.map((row) => row[colIndex]));
+  }
   //=========================================================== sort and title data change
   const handleTitle = (event) => {
     const title = event.target.value;
     setSectionTitle(title);
+    setTableDate(false);
   };
 
   const handleSecSortChange = (event) => {
     const sort = event.target.value;
     setSectionSort(sort);
+    setTableDate(false);
   };
 
   //==================================================================editor data transfer
   const handleDataTransfer = (data) => {
     setDataFromChild(data);
+    setTableDate(false);
+  };
+  //===========================================================================================table data
+  const handleDataSave = (data) => {
+    setTableDate(false);
+    setDataFromTable(data);
   };
 
   const removeHtmlTags = (htmlString) => {
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = htmlString;
-    return tempDiv.textContent || tempDiv.innerText || "";
+    const regex = /<(?!\/?a\s*\/?)[^>]*>/g;
+    return htmlString.replace(regex, "");
   };
+
   //=========================================================handle section data in an array of objects
 
   const handleAddSection = (e) => {
@@ -355,10 +395,11 @@ const BlogUpdate = () => {
       sort: parseInt(sectionSort),
       image: blogImg3.split("blog/")[1]?.replace(/\.jpg$/, ""),
       section: plainText,
-      // section: `${dataFromChild}`,
+      data_table: JSON.stringify(dataFromTable),
       site: "",
       alt: "",
     };
+    console.log(newSection);
     axios
       .post(SEC_ADD + id, newSection, {
         headers: {
@@ -372,13 +413,13 @@ const BlogUpdate = () => {
             position: "top-center",
             autoClose: 2000,
           });
+          sectionResponse();
         } else {
           toast.error(response?.data?.message, {
             position: "top-center",
             autoClose: 2000,
           });
         }
-        getBlogInfo();
       });
     setSectionTitle("");
     setSectionSort(parseInt(sectionSort) + 1);
@@ -386,6 +427,8 @@ const BlogUpdate = () => {
     setStateBtn(1);
     editorRef.current.clearEditorContent();
     setBlogImg3("");
+    setDataFromTable([]);
+    setTableDate(true);
   };
 
   // =====================================================================================delete the targeted section
@@ -409,8 +452,7 @@ const BlogUpdate = () => {
       setFormData((prev) => {
         return { ...prev, url: modifiedValue };
       });
-    }
-    else if (name === "keywords") {
+    } else if (name === "keywords") {
       modifiedValue = modifiedValue.toLowerCase();
       setFormData((prev) => {
         return { ...prev, keywords: modifiedValue };
@@ -654,7 +696,6 @@ const BlogUpdate = () => {
                 <div className="blog-new-img">
                   {blogImg2 ? blogImgName : <></>}
                 </div>
-
               </div>
             </div>
             <div className="from-filed">
@@ -675,13 +716,45 @@ const BlogUpdate = () => {
                 Blog Sport
               </label>
               <input
-                type="text"
+                list="sports"
                 name="sport"
                 id="sport"
                 placeholder="Enter Blog Sport"
-                value={formData.sport}
+                value={formData?.sport}
                 onChange={handleChange}
               />
+
+              <datalist id="sports">
+                <option value="archery"></option>
+                <option value="arts"></option>
+                <option value="athletics"></option>
+                <option value="badminton"></option>
+                <option value="basketball"></option>
+                <option value="billiards"></option>
+                <option value="boxing"></option>
+                <option value="chess"></option>
+                <option value="cricket"></option>
+                <option value="fencing"></option>
+                <option value="football"></option>
+                <option value="golf"></option>
+                <option value="hockey"></option>
+                <option value="kabaddi"></option>
+                <option value="karate"></option>
+                <option value="kho-kho"></option>
+                <option value="mma"></option>
+                <option value="motorsports"></option>
+                <option value="rugby"></option>
+                <option value="shooting"></option>
+                <option value="skating"></option>
+                <option value="sports"></option>
+                <option value="squash"></option>
+                <option value="swimming"></option>
+                <option value="table-Tennis"></option>
+                <option value="taekwondo"></option>
+                <option value="tennis"></option>
+                <option value="volleyball"></option>
+                <option value="wrestling"></option>
+              </datalist>
             </div>
             <div className="from-filed">
               <label htmlFor="title" className="common-fonts blogs-new-label">
@@ -720,8 +793,12 @@ const BlogUpdate = () => {
                   style={{ display: "none" }}
                 />
                 <div className="from-blog-section from-filed">
-                  <label htmlFor="title" className="common-fonts blogs-new-label">
-                    Section Title<span className="common-fonts redAlert"> *</span>
+                  <label
+                    htmlFor="title"
+                    className="common-fonts blogs-new-label"
+                  >
+                    Section Title
+                    <span className="common-fonts redAlert"> *</span>
                   </label>
                   <input
                     type="text"
@@ -731,7 +808,6 @@ const BlogUpdate = () => {
                     onChange={handleTitle}
                     value={sectionTitle}
                   />
-
 
                   <div className="formBtnBox">
                     <div className="blog-url-input-2 blog-sort">
@@ -759,19 +835,20 @@ const BlogUpdate = () => {
                         Add Image
                       </button>
 
-                      <div className="blog-new-img">{blogImg3 ? blogImgName2 : <></>}</div>
+                      <div className="blog-new-img">
+                        {blogImg3 ? blogImgName2 : <></>}
+                      </div>
                     </div>
                     <button
                       onClick={handleAddSection}
                       className="common-fonts blog-add-img add-img-2 add-img-3"
                     >
-                      Add Section<span className="common-fonts redAlert"> *</span>
+                      Add Section
+                      <span className="common-fonts redAlert"> *</span>
                     </button>
                   </div>
-
-
                 </div>
-
+                <Table onDataSave={handleDataSave} tableFlag={tableData} />
                 <div className="formEditor">
                   <ReactEditor
                     ref={editorRef} // Attach the ref here
@@ -779,123 +856,136 @@ const BlogUpdate = () => {
                   />
                 </div>
               </div>
-
-              {sectionData?.map((section, index) => (
-                <div key={index} className={`section ${index === 0 ? 'first-section' : ''}`}>
+              <div>
+                {sectionData?.map((section, index) => (
                   <div
-                    className="sectionDropdown"
-                    onClick={() => accordianClick(index)}
+                    key={index}
+                    className={`section ${index === 0 ? "first-section" : ""}`}
                   >
-                    <div className="accHead">
-                      <h3>{section.sort}</h3>
-                      <h3>{section.heading}</h3>
-                    </div>
-                    {isIndex === index ? (
-                      <span>
-                        <i class="fa-sharp fa-solid fa-minus"></i>
-                      </span>
-                    ) : (
-                      <span>
-                        <i className="fa-sharp fa-solid fa-plus"></i>
-                      </span>
-                    )}
-                  </div>
-                  <div
-                    className={
-                      isIndex === index ? "answer display_answer" : "answer"
-                    }
-                  >
-                    <div className="sectionBlockOne">
-                      <input
-                        type="text"
-                        name="Sort"
-                        id="Sort"
-                        placeholder="Sort"
-                        className="SubsectionSort"
-                        value={section.sort}
-                        onChange={(event) => handleSortChange(event, index)}
-                      />
-                      <input
-                        type="text"
-                        name="heading"
-                        id="heading"
-                        placeholder="Section Title"
-                        className="sectionHead"
-                        value={section.heading}
-                        onChange={(event) => handleSecTitleChange(event, index)}
-                      />
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(event) => handleReplaceImage(event, index)}
-                        style={{ display: "none" }}
-                        ref={(input) => (fileInputRefs[index] = input)}
-                      />
-                      <div className="blog-browse-img-2">
-                        <button
-                          className="common-fonts blog-add-img add-img-2"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            fileInputRefs[index].click();
-                            setUpdateStateBtn(1);
-                          }}
-                        >
-                          {section?.image ? " change image" : " add image"}
-                        </button>
-                        {section?.image ? (
-                          <p className="common-fonts section-img-new">
-                            {section?.image}
-                          </p>
-                        ) : (
-                          <></>
-                        )}
+                    <div
+                      className="sectionDropdown"
+                      onClick={() => accordianClick(index)}
+                    >
+                      <div className="accHead">
+                        <h3>{section.sort}</h3>
+                        <h3>{section.heading}</h3>
                       </div>
-                    </div>
-
-                    <div className="formEditor">
-                      <ReactEditor
-                        onDataTransfer={(data) =>
-                          handleEditorChange(data, index)
-                        }
-                        initialContent={section.section}
-                      />
-                    </div>
-                    <div className="blog-disable">
-                      {updateStateBtn === 0 ? (
-                        <button
-                          disabled
-                          className="disabledBtn blog-update-btn"
-                        >
-                          Update
-                        </button>
+                      {isIndex === index ? (
+                        <span>
+                          <i class="fa-sharp fa-solid fa-minus"></i>
+                        </span>
                       ) : (
-                        <button
-                          className="common-fonts common-save-button blog-update-btn"
-                          onClick={() => handleUpdateClick(section.id)}
-                        >
-                          Update
-                        </button>
+                        <span>
+                          <i className="fa-sharp fa-solid fa-plus"></i>
+                        </span>
                       )}
                     </div>
-                    {section.id ? (
-                      <></>
-                    ) : (
-                      <div className="deleteContainer">
-                        <button
-                          onClick={() => handleDeleteSection(index)}
-                          className="sectionDelete"
-                        >
-                          <img
-                            src={trash}
-                            className="deleteIcon"
-                            alt="Delete"
-                          />
-                        </button>
+                    <div
+                      className={
+                        isIndex === index ? "answer display_answer" : "answer"
+                      }
+                    >
+                      <div className="sectionBlockOne">
+                        <input
+                          type="text"
+                          name="Sort"
+                          id="Sort"
+                          placeholder="Sort"
+                          className="SubsectionSort"
+                          value={section.sort}
+                          onChange={(event) => handleSortChange(event, index)}
+                        />
+                        <input
+                          type="text"
+                          name="heading"
+                          id="heading"
+                          placeholder="Section Title"
+                          className="sectionHead"
+                          value={section.heading}
+                          onChange={(event) =>
+                            handleSecTitleChange(event, index)
+                          }
+                        />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(event) => handleReplaceImage(event, index)}
+                          style={{ display: "none" }}
+                          ref={(input) => (fileInputRefs[index] = input)}
+                        />
+                        <div className="blog-browse-img-2">
+                          <button
+                            className="common-fonts blog-add-img add-img-2"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              fileInputRefs[index].click();
+                              setUpdateStateBtn(1);
+                            }}
+                          >
+                            {section?.image ? " change image" : " add image"}
+                          </button>
+                          {section?.image ? (
+                            <p className="common-fonts section-img-new">
+                              {section?.image}
+                            </p>
+                          ) : (
+                            <></>
+                          )}
+                        </div>
                       </div>
-                    )}
+                      <div>
+                        <DynamicTable
+                          onDataSave={(data) =>
+                            handleTableChange(data, index, section.id)
+                          }
+                          initialData={section.data_table}
+                        />
+                      </div>
+                      <div className="formEditor">
+                        <ReactEditor
+                          onDataTransfer={(data) =>
+                            handleEditorChange(data, index)
+                          }
+                          initialContent={section.section}
+                        />
+                      </div>
+                      <div className="blog-disable">
+                        {updateStateBtn === 0 ? (
+                          <button
+                            disabled
+                            className="disabledBtn blog-update-btn"
+                          >
+                            Update
+                          </button>
+                        ) : (
+                          <button
+                            className="common-fonts common-save-button blog-update-btn"
+                            onClick={() => handleUpdateClick(section.id)}
+                          >
+                            Update
+                          </button>
+                        )}
+                      </div>
+                      {section.id ? (
+                        <></>
+                      ) : (
+                        <div className="deleteContainer">
+                          <button
+                            onClick={() => handleDeleteSection(index)}
+                            className="sectionDelete"
+                          >
+                            <img
+                              src={trash}
+                              className="deleteIcon"
+                              alt="Delete"
+                            />
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </>
 
             {/* ============================================================================================================================================== */}
@@ -925,11 +1015,16 @@ const BlogUpdate = () => {
                   >
                     <option value="">Select a tag</option>
 
-                    {options?.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.tag}
-                      </option>
-                    ))}
+                    {options
+                      ?.filter(
+                        (option) =>
+                          !tagId.split(",").includes(option.id.toString())
+                      )
+                      .map((option) => (
+                        <option key={option?.id} value={option?.id}>
+                          {option?.tag}
+                        </option>
+                      ))}
                   </select>
                   {/* 
                   <button onClick={AddTag} type="button" className="primaryBtn">
@@ -993,7 +1088,9 @@ const BlogUpdate = () => {
                   </div>
                 </div>
                 <div className="tagData tag-box tag-box-2">
-                  <div className={selectSite ? 'tagItems' : ''}>{selectSite}</div>
+                  <div className={selectSite ? "tagItems" : ""}>
+                    {selectSite}
+                  </div>
                 </div>
               </div>
             </div>

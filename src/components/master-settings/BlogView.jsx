@@ -11,7 +11,7 @@ const BlogView = () => {
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectSite, setSelectSite] = useState("bookmyplayer");
-  const decryptedToken = localStorage.getItem("jwtToken");
+  const decryptedToken = getDecryptedToken();
   const blogData = () => {
     const siteName = {
       siteName: selectSite,
