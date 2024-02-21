@@ -25,7 +25,7 @@ const Opening = () => {
                 localStorage.setItem("role_name", data?.type?.toLowerCase());
                 localStorage.setItem("academy_id", data?.parent_id);
                 localStorage.setItem("id", id);
-                if (role === "academy") {
+                if (data?.type_id === 2) {
                     const permissions = "/bmp,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/support,/bmp/settings,/bmp/settings/review/view,/bmp/settings/blog/add,/bmp/settings/blog/view,/bmp/settings/tournament/add,/bmp/settings/tournament/view";
                     const userPath = permissions.split(",");
                     const userPathTot = userPath.join(",");
@@ -37,7 +37,19 @@ const Opening = () => {
                     localStorage.setItem("landingUrl", "/bmp/academy/overview");
                     navigate("/bmp/academy/overview");
                 }
-                else if (role === "player") {
+                else if (data?.type_id === 3) {
+                  const permissions = "/bmp,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/support,/bmp/settings,/bmp/settings/review/view,/bmp/settings/blog/add,/bmp/settings/blog/view,/bmp/settings/tournament/add,/bmp/settings/tournament/view";
+                  const userPath = permissions.split(",");
+                  const userPathTot = userPath.join(",");
+                  const encryptedUserPathTot = CryptoJS.AES.encrypt(
+                      userPathTot,
+                      secretKey
+                  ).toString();
+                  localStorage.setItem("encryptedUserPathTot", encryptedUserPathTot);
+                  localStorage.setItem("landingUrl", "/bmp/academy/overview");
+                  navigate("/bmp/academy/overview");
+              }
+                else if (data?.type_id === 3) {
                     const permissions = "/bmp,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/support,/bmp/settings,/bmp/settings/review/view,/bmp/settings/blog/add,/bmp/settings/blog/view,/bmp/settings/tournament/add,/bmp/settings/tournament/view";
                     const userPath = permissions.split(",");
                     const userPathTot = userPath.join(",");
@@ -49,7 +61,7 @@ const Opening = () => {
                     localStorage.setItem("landingUrl", "/bmp/academy/overview");
                     navigate("/bmp/academy/overview");
                 }
-                else if (role === "academy_admin") {
+                else if (data?.type_id === 0) {
                     const permissions = "/bmp,/bmp/admin,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/support,/bmp/settings,/bmp/settings/review/view,/bmp/settings/tournament/add,/bmp/settings/tournament/view";
                     const userPath = permissions.split(",");
                     const userPathTot = userPath.join(",");
@@ -60,7 +72,7 @@ const Opening = () => {
                     localStorage.setItem("encryptedUserPathTot", encryptedUserPathTot);
                     localStorage.setItem("landingUrl", "/bmp/admin");
                     navigate("/bmp/admin");
-                }
+                }   
                 setIsLoading(false);
             }
         } catch (error) {
