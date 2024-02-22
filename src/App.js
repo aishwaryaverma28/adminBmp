@@ -31,15 +31,15 @@ import BlogUpdate from "./components/master-settings/BlogUpdate.jsx";
 import Testing from "./components/Testing.jsx";
 const router = createBrowserRouter([
   {
-    path: "/authenticate/:auth",
+    path: "/auth",
     element: <Testing />,
     errorElement: <Error />,
   },
-  {
-    path: "/:source/:id",
-    element: <Opening />,
-    errorElement: <Error />,
-  },
+  // {
+  //   path: "/:source/:id",
+  //   element: <Opening />,
+  //   errorElement: <Error />,
+  // },
   {
     path: "/bmp",
     element: <BmpPanel />,

@@ -6,12 +6,21 @@ import loader from "../assets/image/loader.gif"
 import CryptoJS from "crypto-js";
 const secretKey = "mySecretKey123";
 const Testing = () => {
-  const { auth } = useParams();
+  // const { auth } = useParams();
+  // console.log(auth)
   const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+    const [authValue, setAuthValue] = useState('');
+
+    useEffect(() => {
+      const params = new URLSearchParams(window.location.search);
+      const authParam = params.get('auth');
+      setAuthValue(authParam);
+    }, []);
+    console.log(authValue)
+  
   var key = 'secret_jddkhksjhkasdhkshdkdkasd';
-  const cleanedAuth = auth.replace('auth=', '');
-  var encryptedDataBase64 = cleanedAuth;
+  var encryptedDataBase64 = authValue;
   var encryptedData = atob(encryptedDataBase64);
   var decryptedData = '';
   for (var i = 0; i < encryptedData.length; i++) {
@@ -88,9 +97,9 @@ const Testing = () => {
       })
   }
   useEffect(() => {
-    localStorage.setItem("jwtToken", cleanedAuth);
+    localStorage.setItem("jwtToken", authValue);
     userData();
-  }, [cleanedAuth])
+  }, [authValue])
   return (
     <>
     {isLoading ? (<img src={loader} alt="loading" />) : (<h2> loading </h2>)}
