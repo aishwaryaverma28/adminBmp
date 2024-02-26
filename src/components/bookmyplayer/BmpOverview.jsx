@@ -1035,6 +1035,7 @@ const BmpOverview = () => {
                 }`}
               name="experience"
               onChange={handleChange}
+              value={isLoading ? "-" : academyData?.experience || ""}
               disabled={status === 0 && (role_name === 'academy' || role_name === 'player') }
             >
               <option value="">Select Experience</option>

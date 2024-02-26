@@ -29,7 +29,6 @@ const [details, setDetails]= useState(null);
       }
       )
       .then((response) => {
-        console.log(response?.data?.data);
         setDetails(response?.data?.data[0])
     })
       .catch((error) => {

@@ -152,7 +152,6 @@ const OverviewById = () => {
         console.log(error);
       });
   };
-
   const updateAcadmeyData = () => {
     if (newAcadmeyData && Object.keys(newAcadmeyData).length > 0) {
       setAcademyData((prevAcadmeyData) => {
@@ -160,7 +159,6 @@ const OverviewById = () => {
       });
     }
     if (keysOfNewAcadmeyData.includes("sport")) {
-      // alert("hi")
       setSelectedDays(newAcadmeyData?.sport?.split(",") || []);
     }
     if (keysOfNewAcadmeyData.includes("spoken_languages")) {
@@ -200,6 +198,7 @@ const OverviewById = () => {
       updateAcadmeyData();
     }
   }, [newAcadmeyData, status, role_name]);
+  console.log(academyData)
   //==============================================================acadmey data
   const academyDetails = () => {
     axios
@@ -210,6 +209,7 @@ const OverviewById = () => {
       }
       )
       .then((response) => {
+        console.log(response?.data?.data)
         if (response?.data?.data && response?.data?.data?.length !== 0) 
         {
         const sport = response?.data?.data[0]?.sport;
@@ -507,111 +507,39 @@ const OverviewById = () => {
     setPhoneNumberCount(phoneNumberCount + 1);
     setIsButtonVisible(false);
   };
-  const startAndEndTime = `${selectedStartTime} - ${selectedEndTime}`;
-
-  // console.log(selectedDays)
-  function handleSubmit(event) {
+     function handleSubmit(event) {
     event.preventDefault();
-    const filteredProgressArray = progressArray.filter(value => value !== "1");
+     const filteredProgressArray = progressArray.filter(value => value !== "1");
     if (!filteredProgressArray?.includes("1")) {
       filteredProgressArray.push("1");
       setProgressArray(filteredProgressArray);
     }
     const combinedProgress = filteredProgressArray.join(",");
-    const spokenLanguagesChanged =
-      languageString !== academyData?.spoken_languages;
-    const sportsChanged =
-      selectedDaysString?.replace(/^,+/g, "") !== academyData?.sport;
-    const addressComponents = [
-      academyData?.address1,
-      academyData?.address2,
-      academyData?.city,
-      academyData?.state,
-    ];
-    const formattedAddress = addressComponents
-      .filter((component) => component && component.trim() !== "")
-      .join(", ");
-    const addressChanged = address !== formattedAddress;
-    const maplinkChanged = mapLink !== academyData?.map;
-    const coordinateChanged = coordinate !== academyData?.coordinate;
-    const timingChanged = startAndEndTime !== academyData?.timing;
-    const logoChanged = fileName !== academyData?.fileName;
-    const progressChanged = combinedProgress !== academyData?.completion_percentage;
-    const updatedFormData = {};
-    const hasChanged = (field) =>
-      academyData?.[field] !== academyDataOld?.[field];
-    if (hasChanged("name")) {
-      updatedFormData.name = academyData.name;
+
+    const updatedFormData = {
+      completion_percentage: combinedProgress,
+      name: academyData.name,
+      about: academyData.about,
+      phone: academyData.phone,
+      whatsapp: academyData.whatsapp,
+      sport: selectedDaysString?.replace(/^,+/g, ""),
+      experience: academyData.experience,
+      facebook: academyData.facebook,
+      instagram: academyData.instagram,
+      website: academyData.website,
+      email: academyData.email,
+      timing: academyData.timing,
+      spoken_languages: academyData.spoken_languages,
+      logo: academyData.logo,
+      address1 : result?.address1,
+      address2 : result?.address2,
+      city : result?.city,
+      state : result?.state,
+      map: mapLink,
+      coordinate: coordinate
     }
-    if (hasChanged("about")) {
-      updatedFormData.about = academyData.about;
-    }
-    if (hasChanged("phone")) {
-      updatedFormData.phone = academyData.phone;
-    }
-    if (hasChanged("whatsapp")) {
-      updatedFormData.whatsapp = academyData.whatsapp;
-    }
-    if (hasChanged("experience")) {
-      updatedFormData.experience = academyData.experience;
-    }
-    if (hasChanged("facebook")) {
-      updatedFormData.facebook = academyData.facebook;
-    }
-    if (hasChanged("instagram")) {
-      updatedFormData.instagram = academyData.instagram;
-    }
-    if (hasChanged("website")) {
-      updatedFormData.website = academyData.website;
-    }
-    if (hasChanged("email")) {
-      updatedFormData.email = academyData.email;
-    }
-    if (hasChanged("timing")) {
-      updatedFormData.timing = academyData.timing;
-    }
-    if (spokenLanguagesChanged && languageString !== "") {
-      updatedFormData.spoken_languages = languageString;
-    }
-    if (number === 1) {
-      updatedFormData.spoken_languages = languageString;
-    }
-    if (sportsChanged) {
-      updatedFormData.sport = selectedDaysString?.replace(/^,+/g, "");
-    }
-    if (timingChanged) {
-      updatedFormData.timing = startAndEndTime;
-    }
-    if (logoChanged && fileName !== "") {
-      updatedFormData.logo = fileName;
-    }
-    if (progressChanged && combinedProgress !== "") {
-      updatedFormData.completion_percentage = combinedProgress;
-    }
-    if (number1 === 1) {
-      updatedFormData.logo = fileName;
-    }
-    if (addressChanged && address !== "") {
-      updatedFormData.address1 = result?.address1;
-      updatedFormData.address2 = result?.address2;
-      updatedFormData.city = result?.city;
-      updatedFormData.state = result?.state;
-    }
-    if (maplinkChanged && mapLink !== "") {
-      updatedFormData.map = mapLink;
-    }
-    if (coordinateChanged && coordinate !== "") {
-      updatedFormData.coordinate = coordinate;
-    }
-    if (number2 === 1) {
-      updatedFormData.address1 = address;
-    }
-    if (number3 === 1) {
-      updatedFormData.map = mapLink;
-    }
-    if (number4 === 1) {
-      updatedFormData.coordinate = coordinate;
-    }
+    console.log(updatedFormData)
+    
     axios
       .put(UPDATE_ACADEMY + id, updatedFormData, {
         headers: {
@@ -700,7 +628,7 @@ const OverviewById = () => {
     axios
       .put(UPDATE_ACADEMY + id, updatedFormData, {
         headers: {
-          Authorization: `Bearer ${decryptedToken}`, // Include the JWT token in the Authorization header
+          Authorization: `Bearer ${decryptedToken}`,
         },
       }
       )
@@ -1146,6 +1074,7 @@ const OverviewById = () => {
             <select
               className={`common-fonts common-input langSelect ${status === 0 && role_name === "academy_admin" && keysOfNewAcadmeyData.includes("experience") ? "redBorderLine" : ""}`}
               name="experience"
+              value={isLoading ? "-" : academyData?.experience || ""}
               onChange={handleChange}
             >
               <option value="">Select Experience</option>
@@ -1181,7 +1110,7 @@ const OverviewById = () => {
               type="text"
               name="timing"
               onChange={handleChange}
-              value={isLoading ? "-" : academyData?.timing === null ? "10am-9pm" : academyData?.timing}
+              value={isLoading ? "10am-9pm" : academyData?.timing}
               className={`common-fonts common-input bmp-input ${status === 0 && role_name === "academy_admin" && keysOfNewAcadmeyData.includes("timing") ? "redBorderLine" : ""}`}
             />
           </div>

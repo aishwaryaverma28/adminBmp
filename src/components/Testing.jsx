@@ -8,6 +8,7 @@ const secretKey = "mySecretKey123";
 const Testing = () => {
   // const { auth } = useParams();
   // console.log(auth)
+  // https://bmp.leadplaner.com/auth?auth=CEcWAQAGFg5GXllRU19IGAoTFgocNBoMRlFWU1FDVF9HBgoVHS0PFzsCBklJW19aUUJXXVpDWBk=
   const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const [authValue, setAuthValue] = useState('');
