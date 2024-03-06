@@ -704,6 +704,16 @@ const BmpOverview = () => {
                 Atheletics
               </div>
               <div
+                className={`common-fonts bmp-game-list ${selectedDays?.includes("archery") &&
+                  !(status === 0 && (role_name === 'academy' || role_name === 'player') )
+                  ? "bmp-game-active"
+                  : ""
+                  } ${status === 0 && (role_name === 'academy' || role_name === 'player')  ? "bmp_disable" : ""}`}
+                onClick={() => handleDayClick("archery")}
+              >
+               Archery
+              </div>
+              <div
                 className={`common-fonts bmp-game-list ${selectedDays?.includes("badminton") &&
                   !(status === 0 && (role_name === 'academy' || role_name === 'player') )
                   ? "bmp-game-active"

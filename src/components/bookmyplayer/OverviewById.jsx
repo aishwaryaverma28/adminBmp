@@ -780,6 +780,15 @@ const OverviewById = () => {
                 Atheletics
               </div>
               <div
+                className={`common-fonts bmp-game-list ${selectedDays?.includes("archery")
+                  ? "bmp-game-active"
+                  : ""
+                  } `}
+                onClick={() => handleDayClick("archery")}
+              >
+                Archery
+              </div>
+              <div
                 className={`common-fonts bmp-game-list ${selectedDays?.includes("badminton")
                   ? "bmp-game-active"
                   : ""
