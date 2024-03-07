@@ -171,16 +171,16 @@ const OverviewById = () => {
       });
       setMappedLanguages([...newLanguage]);
     }
-    if (keysOfNewAcadmeyData.includes("address1")) {
+    if (keysOfNewAcadmeyData.includes("address1") || keysOfNewAcadmeyData.includes("map")) {
       const addressComponents = [
-        newAcadmeyData?.address1,
-        newAcadmeyData?.address2,
-        newAcadmeyData?.city,
-        newAcadmeyData?.state,
+          newAcadmeyData?.address1,
+          newAcadmeyData?.address2,
+          newAcadmeyData?.city,
+          newAcadmeyData?.state,
       ];
       const formattedAddress = addressComponents
-        .filter((component) => component && component.trim() !== "")
-        .join(", ");
+          .filter((component) => component && component.trim() !== "")
+          .join(", ");
       setAddress(formattedAddress || "");
       setCoordinate(newAcadmeyData?.coordinate || "");
       setMapLink(newAcadmeyData?.map || "");
@@ -188,7 +188,8 @@ const OverviewById = () => {
       result.address2 = newAcadmeyData?.address2;
       result.city = newAcadmeyData?.city;
       result.state = newAcadmeyData?.state;
-    }
+  }
+  
      if (keysOfNewAcadmeyData.includes("logo")) {
       setFileName(newAcadmeyData.logo);
     }
@@ -198,7 +199,6 @@ const OverviewById = () => {
       updateAcadmeyData();
     }
   }, [newAcadmeyData, status, role_name]);
-  console.log(academyData)
   //==============================================================acadmey data
   const academyDetails = () => {
     axios
@@ -209,7 +209,6 @@ const OverviewById = () => {
       }
       )
       .then((response) => {
-        console.log(response?.data?.data)
         if (response?.data?.data && response?.data?.data?.length !== 0) 
         {
         const sport = response?.data?.data[0]?.sport;
@@ -601,6 +600,8 @@ const OverviewById = () => {
       setProgressArray(filteredProgressArray);
     }
     const combinedProgress = filteredProgressArray.join(",");
+    // console.log(mapLink);
+    // console.log(coordinate);
 
     const updatedFormData = {
       completion_percentage: combinedProgress,
