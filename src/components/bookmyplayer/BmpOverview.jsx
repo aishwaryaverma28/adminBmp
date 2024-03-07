@@ -564,9 +564,8 @@ const BmpOverview = () => {
         }
       });
     }
-    console.log(updatedFormData);
-    console.log("update body");
-
+    console.log(formattedAddress);
+    if (formattedAddress !== null && formattedAddress !== "") {
     axios
       .post(UPDATE_ACADEMY_TABLE2, updatedFormData, {
         headers: {
@@ -599,8 +598,11 @@ const BmpOverview = () => {
       .finally(() => {
         setStateBtn(0);
       });
+    }else {
+      alert("Please enter your address");
+    }
   }
-
+  
   return (
     <>
       <div className="bmp-container">
