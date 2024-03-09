@@ -11,23 +11,27 @@ const SecureRoutes = (props) => {
   const decryptedUserPath = getDecryptedUserPath();
 
   useEffect(() => {
-    let allowed = decryptedUserPath.split(",");
-const currentPath = location.pathname;
+    if (!landingUrl || landingUrl.trim() === "") {
+      window.location.href = "https://www.bookmyplayer.com/";
+    } else {
+      let allowed = decryptedUserPath.split(",");
+      const currentPath = location.pathname;
 
-if (landingUrl === "/lp/admin") {
-  allowed = allowed.filter((path) => path !== "/lp/home");
-} else if (landingUrl === "/lp/home") {
-  allowed = allowed.filter((path) => path !== "/lp/admin");
-}
+      if (landingUrl === "/lp/admin") {
+        allowed = allowed.filter((path) => path !== "/lp/home");
+      } else if (landingUrl === "/lp/home") {
+        allowed = allowed.filter((path) => path !== "/lp/admin");
+      }
 
-if (!allowed.includes(currentPath)) {
-  navigate(landingUrl);
-} else {
-  setIsLoading(false);
-}
+      if (!allowed.includes(currentPath)) {
+        navigate(landingUrl);
+      } else {
+        setIsLoading(false);
+      }
+    }
   }, [location, navigate, landingUrl, decryptedUserPath]);
 
-return isLoading ? null : <Component />;
+  return isLoading ? null : <Component />;
 };
 
 export default SecureRoutes;
