@@ -7,7 +7,8 @@ import CryptoJS from "crypto-js";
 const secretKey = "mySecretKey123";
 const Testing = () => {
   // https://bmp.leadplaner.com/auth?auth=CEcWAQAGFg5GXllRU19IGAoTFgocNBoMRlFWU1FDVF9HBgoVHS0PFzsCBklJW19aUUJXXVpDWBk=
-  // CEcWAQAGFg5GXllRU19IGAoTFgocNBoMRlFWU1FDVF9HBgoVHS0PFzsCBklJW19aUENVUVlCWxk=
+  //admin============= CEcWAQAGFg5GXllRU19IGAoTFgocNBoMRlFWU1FDVF9HBgoVHS0PFzsCBklJW19aUENVUVlCWxk=
+  // acadmey=========https://bmp.leadplaner.com/auth?auth=CEcWAQAGFg5GXlhdWV9IGAoTFgocNBoMRlFWU1FCVl9HBgoVHS0PFzsCBklJW19aUEJcWF9DWxk=
   const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const [authValue, setAuthValue] = useState('');

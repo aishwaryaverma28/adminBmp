@@ -99,9 +99,14 @@ const BmpHeader = () => {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = "https://www.bookmyplayer.com/profile/logout";
+    if (localStorage.length === 0) {
+      window.location.href = "https://www.bookmyplayer.com/profile/logout";
+    } else {
+      localStorage.clear();
+      window.location.href = "https://www.bookmyplayer.com/profile/logout";
+    }
   };
+  
   const handleViewSite = (e) => {
     e.preventDefault();
     const siteUrl = url;

@@ -61,7 +61,7 @@ const OverviewById = () => {
   let joinLanguage;
   const languages = [
     { value: "Hindi", label: "Hindi" },
-    { value: "English", label: "English" },    
+    { value: "English", label: "English" },
     { value: "Telugu", label: "Telugu" },
     { value: "Kannada", label: "Kannada" },
     { value: "Tamil", label: "Tamil" },
@@ -159,7 +159,7 @@ const OverviewById = () => {
       });
     }
     if (keysOfNewAcadmeyData.includes("sport")) {
-      setSelectedDays(newAcadmeyData?.sport?.split(",") || []);
+      setSelectedDays(newAcadmeyData?.sport || []);
     }
     if (keysOfNewAcadmeyData.includes("spoken_languages")) {
       const languages = newAcadmeyData?.spoken_languages?.split(", ");
@@ -173,14 +173,14 @@ const OverviewById = () => {
     }
     if (keysOfNewAcadmeyData.includes("address1") || keysOfNewAcadmeyData.includes("map")) {
       const addressComponents = [
-          newAcadmeyData?.address1,
-          newAcadmeyData?.address2,
-          newAcadmeyData?.city,
-          newAcadmeyData?.state,
+        newAcadmeyData?.address1,
+        newAcadmeyData?.address2,
+        newAcadmeyData?.city,
+        newAcadmeyData?.state,
       ];
       const formattedAddress = addressComponents
-          .filter((component) => component && component.trim() !== "")
-          .join(", ");
+        .filter((component) => component && component.trim() !== "")
+        .join(", ");
       setAddress(formattedAddress || "");
       setCoordinate(newAcadmeyData?.coordinate || "");
       setMapLink(newAcadmeyData?.map || "");
@@ -188,9 +188,9 @@ const OverviewById = () => {
       result.address2 = newAcadmeyData?.address2;
       result.city = newAcadmeyData?.city;
       result.state = newAcadmeyData?.state;
-  }
-  
-     if (keysOfNewAcadmeyData.includes("logo")) {
+    }
+
+    if (keysOfNewAcadmeyData.includes("logo")) {
       setFileName(newAcadmeyData.logo);
     }
   };
@@ -202,73 +202,72 @@ const OverviewById = () => {
   //==============================================================acadmey data
   const academyDetails = () => {
     axios
-      .post(GET_ACADEMY , {academy_id:id}, {
+      .post(GET_ACADEMY, { academy_id: id }, {
         headers: {
           Authorization: `Bearer ${decryptedToken}`,
         },
       }
       )
       .then((response) => {
-        if (response?.data?.data && response?.data?.data?.length !== 0) 
-        {
-        const sport = response?.data?.data[0]?.sport;
-        const academyName = response?.data?.data[0]?.name;
-        const cityName = response?.data?.data[0]?.city;
-        const academyObject = default_about?.find(obj => obj.sport === sport);
-        const updatedAbout = academyObject?.about?.replace(/ACADEMY_NAME/g, academyName);
-        const finalAbout = updatedAbout?.replace(/CITY_NAME/g, cityName);
-        const intro = removeHtmlTags(finalAbout);
-        setIntroduction(intro);
-        if (sport === null || sport === "")
-          setIntroduction("-")
+        if (response?.data?.data && response?.data?.data?.length !== 0) {
+          const sport = response?.data?.data[0]?.sport;
+          const academyName = response?.data?.data[0]?.name;
+          const cityName = response?.data?.data[0]?.city;
+          const academyObject = default_about?.find(obj => obj.sport === sport);
+          const updatedAbout = academyObject?.about?.replace(/ACADEMY_NAME/g, academyName);
+          const finalAbout = updatedAbout?.replace(/CITY_NAME/g, cityName);
+          const intro = removeHtmlTags(finalAbout);
+          setIntroduction(intro);
+          if (sport === null || sport === "")
+            setIntroduction("-")
 
-        const addressComponents = [
-          response?.data?.data[0]?.address1,
-          response?.data?.data[0]?.address2,
-          response?.data?.data[0]?.city,
-          response?.data?.data[0]?.state,
-        ];
-        const formattedAddress = addressComponents
-          .filter((component) => component && component?.trim() !== "")
-          .join(", ");
-        setSelectedLanguage(response?.data?.data[0]?.spoken_languages);
-        setAcademyData(response?.data?.data[0]);
-        setAcademyDataOld(response?.data?.data[0]);
-        setAddress(formattedAddress || "");
-        setCoordinate(response?.data?.data[0]?.coordinate || "");
-        setMapLink(response?.data?.data[0]?.map || "");
-        setProgress(response?.data?.data[0]?.completion_percentage);
-        setSelectedDays(response?.data?.data[0]?.sport?.split(",") || []);
-        if (
-          response?.data?.data[0]?.completion_percentage !== "" &&
-          response?.data?.data[0]?.completion_percentage !== null
-        ) {
-          setProgressArray(
-            response?.data?.data[0]?.completion_percentage.split(",")
-          );
+          const addressComponents = [
+            response?.data?.data[0]?.address1,
+            response?.data?.data[0]?.address2,
+            response?.data?.data[0]?.city,
+            response?.data?.data[0]?.state,
+          ];
+          const formattedAddress = addressComponents
+            .filter((component) => component && component?.trim() !== "")
+            .join(", ");
+          setSelectedLanguage(response?.data?.data[0]?.spoken_languages);
+          setAcademyData(response?.data?.data[0]);
+          setAcademyDataOld(response?.data?.data[0]);
+          setAddress(formattedAddress || "");
+          setCoordinate(response?.data?.data[0]?.coordinate || "");
+          setMapLink(response?.data?.data[0]?.map || "");
+          setProgress(response?.data?.data[0]?.completion_percentage);
+          setSelectedDays(response?.data?.data[0]?.sport || []);
+          if (
+            response?.data?.data[0]?.completion_percentage !== "" &&
+            response?.data?.data[0]?.completion_percentage !== null
+          ) {
+            setProgressArray(
+              response?.data?.data[0]?.completion_percentage.split(",")
+            );
+          }
+          if (response?.data?.data[0]?.spoken_languages === null) {
+            setMappedLanguages([
+              {
+                language: "Hindi"
+              },
+              {
+                language: "English"
+              },
+            ]);
+          } else {
+            const languages = response?.data?.data[0]?.spoken_languages.split(", ");
+            const newLanguage = languages.map((lang) => {
+              const [language] = lang.split("(");
+              return {
+                language: language.trim(),
+              };
+            });
+
+            setMappedLanguages([...newLanguage]);
+          }
+          setIsLoading(false);
         }
-        if (response?.data?.data[0]?.spoken_languages === null) {
-          setMappedLanguages([
-            {
-              language: "Hindi"
-            },
-            {
-              language: "English"
-            },
-          ]);
-        } else {
-          const languages = response?.data?.data[0]?.spoken_languages.split(", ");  
-          const newLanguage = languages.map((lang) => {
-            const [language] = lang.split("(");
-            return {
-              language: language.trim(),
-            };
-          });
-  
-          setMappedLanguages([...newLanguage]);
-        }
-        setIsLoading(false);
-      }
       })
       .catch((error) => {
         // console.log(error);
@@ -277,7 +276,7 @@ const OverviewById = () => {
   };
   useEffect(() => {
     progressArray?.push("1");
-  },[academyData])
+  }, [academyData])
   //=======================================================================language
   const handlelanguageNameChange = (e) => {
     setSelectedLanguageName(e.target.value);
@@ -376,12 +375,12 @@ const OverviewById = () => {
     }
   };
 
-   useEffect(() => {
+  useEffect(() => {
     academyDetails();
     updatedAcadmeyInfo();
   }, []);
-  
-  
+
+
   const processImageName = (imageName) => {
     const nameParts = imageName?.split(".");
     if (nameParts.length > 1) {
@@ -480,20 +479,21 @@ const OverviewById = () => {
 
   const handleDayClick = (day) => {
     setStateBtn(1);
-    if (selectedDays?.includes(day)) {
-      setSelectedDays(
-        selectedDays.filter((selectedDay) => selectedDay !== day)
-      );
-      updateField("sport");
-    } else {
-      setSelectedDays([...selectedDays, day]);
-      updateField("sport");
-    }
+    setSelectedDays(day);
+    // if (selectedDays?.includes(day)) {
+    //   setSelectedDays(
+    //     selectedDays.filter((selectedDay) => selectedDay !== day)
+    //   );
+    //   updateField("sport");
+    // } else {
+    //   setSelectedDays([...selectedDays, day]);
+    //   updateField("sport");
+    // }
   };
 
-  useEffect(() => {
-    setSelectedDaysString(selectedDays.join(","));
-  }, [selectedDays]);
+  // useEffect(() => {
+  //   setSelectedDaysString(selectedDays.join(","));
+  // }, [selectedDays]);
 
   const handleButtonClick = (event) => {
     event.preventDefault();
@@ -506,9 +506,9 @@ const OverviewById = () => {
     setPhoneNumberCount(phoneNumberCount + 1);
     setIsButtonVisible(false);
   };
-     function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
-     const filteredProgressArray = progressArray.filter(value => value !== "1");
+    const filteredProgressArray = progressArray.filter(value => value !== "1");
     if (!filteredProgressArray?.includes("1")) {
       filteredProgressArray.push("1");
       setProgressArray(filteredProgressArray);
@@ -521,24 +521,22 @@ const OverviewById = () => {
       about: academyData.about,
       phone: academyData.phone,
       whatsapp: academyData.whatsapp,
-      sport: selectedDaysString?.replace(/^,+/g, ""),
+      sport: selectedDays,
       experience: academyData.experience,
       facebook: academyData.facebook,
       instagram: academyData.instagram,
       website: academyData.website,
       email: academyData.email,
       timing: academyData.timing,
-      spoken_languages: academyData.spoken_languages,
+      spoken_languages: languageString,
       logo: academyData.logo,
-      address1 : result?.address1,
-      address2 : result?.address2,
-      city : result?.city,
-      state : result?.state,
+      address1: result?.address1,
+      address2: result?.address2,
+      city: result?.city,
+      state: result?.state,
       map: mapLink,
       coordinate: coordinate
     }
-    console.log(updatedFormData)
-    
     axios
       .put(UPDATE_ACADEMY + id, updatedFormData, {
         headers: {
@@ -580,17 +578,17 @@ const OverviewById = () => {
           Authorization: `Bearer ${decryptedToken}`
         }
       }
-      ).then((response) => {
-        if (response?.data?.status === 1) {
-          toast.success("Academy info updated successfully", {
-            position: "top-center",
-            autoClose: 2000,
-          });
-        }
-        ApproveSubmit();
-      }).catch((error) => {
-        console.log(error);
-      })
+    ).then((response) => {
+      if (response?.data?.status === 1) {
+        toast.success("Academy info updated successfully", {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+      ApproveSubmit();
+    }).catch((error) => {
+      console.log(error);
+    })
     setRevokeId(null);
   }
   const ApproveSubmit = () => {
@@ -609,7 +607,7 @@ const OverviewById = () => {
       about: academyData.about,
       phone: academyData.phone,
       whatsapp: academyData.whatsapp,
-      sport: selectedDaysString?.replace(/^,+/g, ""),
+      sport: selectedDays,
       experience: academyData.experience,
       facebook: academyData.facebook,
       instagram: academyData.instagram,
@@ -618,10 +616,10 @@ const OverviewById = () => {
       timing: academyData.timing,
       spoken_languages: academyData.spoken_languages,
       logo: academyData.logo,
-      address1 : result?.address1,
-      address2 : result?.address2,
-      city : result?.city,
-      state : result?.state,
+      address1: result?.address1,
+      address2: result?.address2,
+      city: result?.city,
+      state: result?.state,
       map: mapLink,
       coordinate: coordinate
     }
@@ -672,22 +670,23 @@ const OverviewById = () => {
           Authorization: `Bearer ${decryptedToken}`
         }
       }
-      ).then((response) => {
-        if (response?.data?.status === 1) {
-          toast.success("Academy info updated successfully", {
-            position: "top-center",
-            autoClose: 2000,
-          });
-        }
+    ).then((response) => {
+      if (response?.data?.status === 1) {
+        toast.success("Academy info updated successfully", {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
 
-      }).catch((error) => {
-        console.log(error);
-      })
+    }).catch((error) => {
+      console.log(error);
+    })
     closeModal();
     setRevokeId(null);
     updatedAcadmeyInfo();
     academyDetails();
   }
+ 
   return (
     <>
       <div className="bmp-container">
@@ -763,7 +762,7 @@ const OverviewById = () => {
               Select your sport
             </label>
             <div className={`bmp-games ${status === 0 && role_name === "academy_admin" && keysOfNewAcadmeyData.includes("sport") ? "redBorderLine" : ""}`}>
-            <div
+              <div
                 className={`common-fonts bmp-game-list ${selectedDays?.includes("archery")
                   ? "bmp-game-active"
                   : ""
@@ -788,7 +787,7 @@ const OverviewById = () => {
               >
                 Atheletics
               </div>
-              
+
               <div
                 className={`common-fonts bmp-game-list ${selectedDays?.includes("badminton")
                   ? "bmp-game-active"
@@ -1156,10 +1155,10 @@ const OverviewById = () => {
               <option value="20+">20+</option>
             </select>
           </div>
-          <br/>
+          <br />
           <div className="bmp-input-flex">
             <label htmlFor="" className="common-fonts bmp-academy-name">
-            Open Timings
+              Open Timings
             </label>
             <input
               type="text"
@@ -1234,7 +1233,7 @@ const OverviewById = () => {
                 <div className="bmp-image-preview">
                   <img
                     src={academyData?.logo === null
-                      ? "https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/510/download--1-.png"
+                      ? "https://res.cloudinary.com/cloud2cdn/image/upload/q_10/bookmyplayer/asset/images/logo.svg"
                       : `https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${id}/${academyData?.logo}`}
                     alt=""
                     className="bmp-preview-image"
@@ -1277,23 +1276,28 @@ const OverviewById = () => {
             </div>
 
             <div className="bmp-input-flex ">
-                <select
-                  value={selectedLanguageName}
-                  onChange={handlelanguageNameChange}
-                  className={`common-fonts common-input langSelect level_input bmp_lang_box`}
-                >
-                  <option value="">Select your language</option>
-                  {languages.map((language) => (
-                    <option key={language.value} value={language.value}>
-                      {language.label}
-                    </option>
-                  ))}
-                </select>    
+              <select
+                value={selectedLanguageName}
+                onChange={handlelanguageNameChange}
+                className={`common-fonts common-input langSelect level_input bmp_lang_box`}
+              >
+                <option value="">Select your language</option>
+                {languages.map((language) => {
+                  if (!mappedLanguages?.some((mappedLanguage) => mappedLanguage.language === language.label)) {
+                    return (
+                      <option key={language.value} value={language.value}>
+                        {language.label}
+                      </option>
+                    );
+                  }
+                  return null;
+                })}
+              </select>
             </div>
 
             {mappedLanguages.map((mappedLanguage, index) => (
               <div className={`bmp_overview_language_map  ${status === 0 && role_name === "academy_admin" && keysOfNewAcadmeyData.includes("spoken_languages") ? "redBorderLine" : ""}
-            }`}key={index}>
+            }`} key={index}>
                 <p className={`common-fonts
                   }`}>
                   {mappedLanguage.language}
