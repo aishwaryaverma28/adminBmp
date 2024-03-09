@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../styles/bmp.css";
 import Map from "../../assets/image/map.png";
+import Whatsapp from "../../assets/image/whatsapp.svg";
 import "chart.js/auto";
 import axios from "axios";
 import {
@@ -167,6 +168,7 @@ const BmpOverview = () => {
   //===============================================================================google map changes
   const handleInputChange = async (value) => {
     setAddress(value);
+    setStateBtn(1);
     try {
       const response = await axios.get(`https://www.zomato.com/webroutes/location/search?q=${value}`);
       // console.log(response?.data?.locationSuggestions);
@@ -564,8 +566,7 @@ const BmpOverview = () => {
         }
       });
     }
-    console.log(formattedAddress);
-    if (formattedAddress !== null && formattedAddress !== "") {
+    
     axios
       .post(UPDATE_ACADEMY_TABLE2, updatedFormData, {
         headers: {
@@ -598,11 +599,7 @@ const BmpOverview = () => {
       .finally(() => {
         setStateBtn(0);
       });
-    }else {
-      alert("Please enter your address");
-    }
-  }
-  
+   }
   return (
     <>
       <div className="bmp-container">
@@ -1209,10 +1206,9 @@ const BmpOverview = () => {
                 <div className="bmp-image-preview">
                   <img
                     src={academyData?.logo === null
-                      ? "https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/510/download--1-.png"
+                      ? "https://res.cloudinary.com/cloud2cdn/image/upload/q_10/bookmyplayer/asset/images/logo.svg"
                       : `https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${academyData?.logo}`}
                     alt=""
-                    className="bmp-preview-image"
                   />
                 </div>
               )}

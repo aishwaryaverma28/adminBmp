@@ -520,15 +520,15 @@
 }
 
 .bmp-image-preview img {
-  width: 1.55763rem;
-  height: 1.8615rem;
+  width: 2.8rem;
+  height: 2.8rem;
+  object-fit: fill;
+  border-radius: 50%;
 }
 .bmp-image-preview {
-  width: 3.875rem;
-  height: 3.875rem;
   border-radius: 50%;
-  padding: 1rem;
-  border: 1px solid #dcdcdc;
+  /* padding: 0.5rem; */
+  /* border: 1px solid #dcdcdc; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1181,8 +1181,8 @@ margin-right: 0.3rem;
 
  .whatsapp_btn {
   position: fixed;
-  bottom: 4%;
-  left: 2%;
+  bottom: 6%;
+  right: 2%;
 }
 
 .whatsapp_btn img{

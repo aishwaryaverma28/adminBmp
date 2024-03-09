@@ -22,7 +22,7 @@ const [details, setDetails]= useState(null);
 
   const academyDetails = () => {
     axios
-      .post(GET_ACADEMY, { academy_id: newId }, {
+      .post(GET_ACADEMY, { academy_id: id }, {
         headers: {
           Authorization: `Bearer ${decryptedToken}`,
         },
@@ -41,7 +41,7 @@ const [details, setDetails]= useState(null);
   }, []);
 
 const sendWhatsAppMessage = () => {
-  const message = `I need more details for ${userRole} ${details.name} ${details.url}`;
+  const message = `I'm ${details.name} (${details?.id}) and I need support.`;
   const phoneNumber = "+447979100801";
   // const phoneNumber = "+917558269998";
   const encodedMessage = encodeURIComponent(message);
@@ -114,9 +114,12 @@ const sendWhatsAppMessage = () => {
           Contact Support
         </NavLink>
       </p>
+      {userRole !== "academy_admin" ?
       <div className="whatsapp_btn" onClick={sendWhatsAppMessage}>
      <img src={Whatsapp} loadaing="lazy" alt="loading" width="14" height="14"></img>
     </div>
+    :<></>
+}
     </section>
   );
 };

@@ -95,7 +95,6 @@ const HeadPhone = () => {
             autoClose: 2000,
           });
         }
-
         setDetails({
           title: "",
           description: "",
@@ -127,6 +126,7 @@ const HeadPhone = () => {
               type="text"
               name="title"
               onChange={handleChange}
+              value={details?.title}
               className="common-fonts common-input contact-tab-input"
             />
           </div>
@@ -139,6 +139,7 @@ const HeadPhone = () => {
               name="description"
               onChange={handleChange}
               className="common-fonts common-input contact-tab-input contact-tab-textarea"
+              value={details?.description}
               placeholder="Describe your issue in detail"
             ></textarea>
           </div>
@@ -180,6 +181,7 @@ const HeadPhone = () => {
              name="category"
              onChange={handleChange}
               className="common-input contact-type-of-issue"
+              value={details?.category}
             >
             <option value="">Select your issue</option>
               <option value="technical">Technical</option>

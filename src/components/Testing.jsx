@@ -6,9 +6,8 @@ import loader from "../assets/image/loader.gif"
 import CryptoJS from "crypto-js";
 const secretKey = "mySecretKey123";
 const Testing = () => {
-  // const { auth } = useParams();
-  // console.log(auth)
   // https://bmp.leadplaner.com/auth?auth=CEcWAQAGFg5GXllRU19IGAoTFgocNBoMRlFWU1FDVF9HBgoVHS0PFzsCBklJW19aUUJXXVpDWBk=
+  // CEcWAQAGFg5GXllRU19IGAoTFgocNBoMRlFWU1FDVF9HBgoVHS0PFzsCBklJW19aUENVUVlCWxk=
   const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const [authValue, setAuthValue] = useState('');
@@ -43,7 +42,7 @@ const Testing = () => {
           localStorage.setItem("academy_id", data?.parent_id);
           localStorage.setItem("id", data?.id);
           if (data?.type_id === 2) {
-              const permissions = "/bmp,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/support,/bmp/settings,/bmp/settings/review/view,/bmp/settings/blog/add,/bmp/settings/blog/view,/bmp/settings/tournament/add,/bmp/settings/tournament/view";
+              const permissions = "/bmp,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/support";
               const userPath = permissions.split(",");
               const userPathTot = userPath.join(",");
               const encryptedUserPathTot = CryptoJS.AES.encrypt(
@@ -55,7 +54,7 @@ const Testing = () => {
               navigate("/bmp/academy/overview");
           }
           else if (data?.type_id === 3) {
-            const permissions = "/bmp,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/support,/bmp/settings,/bmp/settings/review/view,/bmp/settings/blog/add,/bmp/settings/blog/view,/bmp/settings/tournament/add,/bmp/settings/tournament/view";
+            const permissions = "/bmp,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/support";
             const userPath = permissions.split(",");
             const userPathTot = userPath.join(",");
             const encryptedUserPathTot = CryptoJS.AES.encrypt(
@@ -66,19 +65,7 @@ const Testing = () => {
             localStorage.setItem("landingUrl", "/bmp/academy/overview");
             navigate("/bmp/academy/overview");
         }
-          else if (data?.type_id === 3) {
-              const permissions = "/bmp,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/support,/bmp/settings,/bmp/settings/review/view,/bmp/settings/blog/add,/bmp/settings/blog/view,/bmp/settings/tournament/add,/bmp/settings/tournament/view";
-              const userPath = permissions.split(",");
-              const userPathTot = userPath.join(",");
-              const encryptedUserPathTot = CryptoJS.AES.encrypt(
-                  userPathTot,
-                  secretKey
-              ).toString();
-              localStorage.setItem("encryptedUserPathTot", encryptedUserPathTot);
-              localStorage.setItem("landingUrl", "/bmp/academy/overview");
-              navigate("/bmp/academy/overview");
-          }
-          else if (data?.type_id === 0) {
+         else if (data?.type_id === 0) {
               const permissions = "/bmp,/bmp/admin,/bmp/academy,/bmp/academy/overview,/bmp/academy/fees,/bmp/academy/training,/bmp/academy/gallery,/bmp/academy/reviews,/bmp/academy/approval,/bmp/academy/leads,/bmp/academy/support,/bmp/settings,/bmp/settings/review/view,/bmp/settings/tournament/add,/bmp/settings/tournament/view";
               const userPath = permissions.split(",");
               const userPathTot = userPath.join(",");
