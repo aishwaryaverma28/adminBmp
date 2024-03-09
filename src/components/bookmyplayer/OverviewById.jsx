@@ -146,6 +146,9 @@ const OverviewById = () => {
           setNewAcadmeyData(filteredData);
           const keys = Object.keys(filteredData);
           setKeysOfNewAcadmeyData(keys);
+          if(response?.data?.data[0]?.status === 0){
+            updateAcadmeyData();
+          }
         }
       })
       .catch((error) => {
