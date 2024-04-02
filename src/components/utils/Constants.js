@@ -35,6 +35,14 @@ export const handleLogout = () => {
     window.location.href = "https://core.leadplaner.com/login";
   }
 };
+//=============================================================config
+export const config = {
+  bucketName: "bmpcdn",
+  region: "ap-south-1",
+  dirName: "test/17",
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+};
 // =============================================================apis used
 const start = "https://bmp.leadplaner.com/api/api";
 // const start = "http://localhost:4000/api";

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import S3FileUpload from 'react-s3';
 import axios from "axios";
 import {
   GET_ACADEMY,
@@ -6,6 +7,7 @@ import {
   UPDATE_ACADEMY_TABLE2,
   GET_UPDATED_ACADEMY_INFO,
   UPDATE_ACADMEY_STATUS,
+  config,
 } from "../utils/Constants";
 import "chart.js/auto";
 import Photo from "../../assets/image/gallery.svg";
@@ -21,6 +23,7 @@ import Training from "./Training.jsx";
 import DisapproveModal from "./DisapproveModal.jsx";
 
 const Gallery = () => {
+  window.Buffer = window.Buffer || require("buffer").Buffer;
   const decryptedToken = localStorage.getItem("jwtToken");
   const academyId = localStorage.getItem("academy_id");
   const role_name = localStorage.getItem("role_name");
@@ -146,49 +149,48 @@ const Gallery = () => {
 
   const academyDetails = () => {
     axios
-    .post(GET_ACADEMY , {academy_id:academyId}, {
-      headers: {
-        Authorization: `Bearer ${decryptedToken}`,
-      },
-    }
-    )
-    .then((response) => {
-      if (response?.data?.data && response?.data?.data?.length !== 0) 
-      {
-        setAcademyData(response?.data?.data[0]);
-        setProgress(response?.data?.data[0]?.completion_percentage);
-        let dummy = response?.data?.data[0]?.completion_percentage + ",1"
-        if (
-          response?.data?.data[0]?.completion_percentage !== "" &&
-          response?.data?.data[0]?.completion_percentage !== null
-        ) {
-          setProgressArray(dummy?.split(","))
-          // setProgressArray(
-          //   response?.data?.data[0]?.completion_percentage?.split(",")
-          // );
-        }
-        progressArray?.push("1");
-        if (
-          response?.data?.data[0]?.photos !== "" &&
-          response?.data?.data[0]?.photos !== null
-        ) {
-          setPhotoUrls(response?.data?.data[0]?.photos?.split(",")?.reverse());
-        }
-        if (
-          response?.data?.data[0].videos !== "" &&
-          response?.data?.data[0].videos !== null
-        ) {
-          setVideoUrls(response.data.data[0].videos?.split(",").reverse());
-        }
-        if (
-          response?.data?.data[0].updated_column !== "" &&
-          response?.data?.data[0].updated_column !== null
-        ) {
-          updatedFields(
-            response.data.data[0].updated_column?.split(",").reverse()
-          );
-        }
+      .post(GET_ACADEMY, { academy_id: academyId }, {
+        headers: {
+          Authorization: `Bearer ${decryptedToken}`,
+        },
       }
+      )
+      .then((response) => {
+        if (response?.data?.data && response?.data?.data?.length !== 0) {
+          setAcademyData(response?.data?.data[0]);
+          setProgress(response?.data?.data[0]?.completion_percentage);
+          let dummy = response?.data?.data[0]?.completion_percentage + ",1"
+          if (
+            response?.data?.data[0]?.completion_percentage !== "" &&
+            response?.data?.data[0]?.completion_percentage !== null
+          ) {
+            setProgressArray(dummy?.split(","))
+            // setProgressArray(
+            //   response?.data?.data[0]?.completion_percentage?.split(",")
+            // );
+          }
+          progressArray?.push("1");
+          if (
+            response?.data?.data[0]?.photos !== "" &&
+            response?.data?.data[0]?.photos !== null
+          ) {
+            setPhotoUrls(response?.data?.data[0]?.photos?.split(",")?.reverse());
+          }
+          if (
+            response?.data?.data[0].videos !== "" &&
+            response?.data?.data[0].videos !== null
+          ) {
+            setVideoUrls(response.data.data[0].videos?.split(",").reverse());
+          }
+          if (
+            response?.data?.data[0].updated_column !== "" &&
+            response?.data?.data[0].updated_column !== null
+          ) {
+            updatedFields(
+              response.data.data[0].updated_column?.split(",").reverse()
+            );
+          }
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -260,37 +262,24 @@ const Gallery = () => {
         );
         return;
       }
-      const folder = "bookmyplayer/academy/" + academyId;
-      const imageNameWithoutExtension = selectedImage.name.replace(
-        /\.[^/.]+$/,
-        ""
-      );
-      const sanitizedImageName = imageNameWithoutExtension.replace(
-        /[^\w-]/g,
-        "-"
-      );
-      const uniqueFileName = `${folder}/${sanitizedImageName}`;
       setIsUploading(true);
-      const data = new FormData();
-      data.append("file", selectedImage);
-      data.append("upload_preset", "zbxquqvw");
-      data.append("cloud_name", "cloud2cdn");
-      data.append("public_id", uniqueFileName);
-
-      fetch("https://api.cloudinary.com/v1_1/cloud2cdn/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
+      const processedFileName = processImageName(selectedImage.name);
+      const modifiedFile = new File([selectedImage], processedFileName, { type: selectedImage.type });
+      const updatedConfig = {
+        ...config,
+        dirName: "academy/" + academyId,
+      };
+      S3FileUpload.uploadFile(modifiedFile, updatedConfig)
         .then((data) => {
+          console.log(data);
           setSelectedFile(selectedImage);
-          setFileName(processImageName(selectedImage.name));
+          setFileName(modifiedFile.name);
           updateField("banner");
           setStateBtn(1);
-          handleSubmit(processImageName(selectedImage.name));
+          handleSubmit(modifiedFile.name);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         })
         .finally(() => {
           setIsUploading(false);
@@ -339,104 +328,75 @@ const Gallery = () => {
     setIsUploadingMulti(true);
     const selectedImage = file;
     if (selectedImage) {
-      if (selectedImage.size > 2 * 1024 * 1024) {
-        showAlertOnce(
-          "Image size should be less than 2MB. Please choose a smaller image."
-        );
-        setIsUploadingMulti(false);
-        return;
-      }
-      const folder = "bookmyplayer/academy/" + academyId;
-      const imageNameWithoutExtension = selectedImage.name.replace(
-        /\.[^/.]+$/,
-        ""
-      );
-      const sanitizedImageName = imageNameWithoutExtension.replace(
-        /[^\w-]/g,
-        "-"
-      );
-      const uniqueFileName = `${folder}/${sanitizedImageName}`;
-      const data = new FormData();
-      data.append("file", selectedImage);
-      data.append("upload_preset", "zbxquqvw");
-      data.append("cloud_name", "cloud2cdn");
-      data.append("public_id", uniqueFileName);
-
-      fetch("https://api.cloudinary.com/v1_1/cloud2cdn/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setFileName2(processImageName(selectedImage.name));
-          const imageUrl = processImageName(selectedImage.name);
-          if (data.secure_url) {
-            photoUrls.push(imageUrl);
-            setPhotoUrls(photoUrls);
-            updateField("photos");
-            setStateBtn(1);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          setIsUploadingMulti(false);
-        });
+        if (selectedImage.size > 2 * 1024 * 1024) {
+            showAlertOnce(
+                "Image size should be less than 2MB. Please choose a smaller image."
+            );
+            setIsUploadingMulti(false);
+            return;
+        }
+        const processedFileName = processImageName(selectedImage.name);
+        const modifiedFile = new File([selectedImage], processedFileName, { type: selectedImage.type });
+        const updatedConfig = {
+            ...config,
+            dirName: "academy/" + academyId,
+        };
+        S3FileUpload.uploadFile(modifiedFile, updatedConfig)
+            .then((data) => {
+                setFileName2(modifiedFile.name);
+                const imageUrl = modifiedFile.name;
+                if (data.location) {
+                    photoUrls?.push(imageUrl);
+                    setPhotoUrls(photoUrls);
+                    updateField("photos");
+                    setStateBtn(1);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+            .finally(() => {
+                setIsUploadingMulti(false);
+            });
     }
-  };
+};
 
-  const submitVideo2 = (file) => {
-    setIsUploadingMulti(true);
-    const selectedImage = file;
-    if (selectedImage) {
+const submitVideo2 = (file) => {
+  setIsUploadingMulti(true);
+  const selectedImage = file;
+  if (selectedImage) {
       if (selectedImage.size > 10 * 1024 * 1024) {
-        showAlertOnce(
-          "Video size should be less than 10MB. Please choose a smaller video."
-        );
-        setIsUploadingMulti(false);
-        return;
-      }
-      const folder = "bookmyplayer/academy/" + academyId;
-      const imageNameWithoutExtension = selectedImage.name.replace(
-        /\.[^/.]+$/,
-        ""
-      );
-      const sanitizedImageName = imageNameWithoutExtension.replace(
-        /[^\w-]/g,
-        "-"
-      );
-      const uniqueFileName = `${folder}/${sanitizedImageName}`;
-      const data = new FormData();
-      data.append("file", selectedImage);
-      data.append("upload_preset", "zbxquqvw");
-      data.append("cloud_name", "cloud2cdn");
-      data.append("public_id", uniqueFileName);
-
-      fetch("https://api.cloudinary.com/v1_1/cloud2cdn/video/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setFileName2(processImageName(selectedImage.name));
-          const imageUrl = processImageName(selectedImage.name);
-          if (data.secure_url) {
-            videoUrls.push(imageUrl);
-            setVideoUrls(videoUrls);
-            updateField("videos");
-            setStateBtn(1);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
+          showAlertOnce(
+              "Video size should be less than 10MB. Please choose a smaller video."
+          );
           setIsUploadingMulti(false);
-        });
-    }
-  };
-
+          return;
+      }
+      const processedFileName = processImageName(selectedImage.name);
+      const modifiedFile = new File([selectedImage], processedFileName, { type: selectedImage.type });
+      const updatedConfig = {
+          ...config,
+          dirName: "academy/" + academyId,
+      };
+      S3FileUpload.uploadFile(modifiedFile, updatedConfig)
+          .then((data) => {
+              setFileName2(modifiedFile.name);
+              const imageUrl = modifiedFile.name;
+              if (data.location) {
+                  videoUrls.push(imageUrl);
+                  setVideoUrls(videoUrls);
+                  updateField("videos");
+                  setStateBtn(1);
+              }
+          })
+          .catch((err) => {
+              console.error(err);
+          })
+          .finally(() => {
+              setIsUploadingMulti(false);
+          });
+  }
+};
   function handleSubmit(file) {
     const filteredProgressArray = progressArray.filter(value => value !== "1");
     if (!filteredProgressArray?.includes("4")) {
@@ -486,7 +446,7 @@ const Gallery = () => {
       setProgressArray(filteredProgressArray);
     }
     const combinedProgress = filteredProgressArray.join(",");
-    
+
     let body = {};
     body.academy_id = academyId;
     const progressChanged =
@@ -634,17 +594,17 @@ const Gallery = () => {
           Authorization: `Bearer ${decryptedToken}`
         }
       }
-      ).then((response) => {
-        if (response?.data?.status === 1) {
-          toast.success("Academy info updated successfully", {
-            position: "top-center",
-            autoClose: 2000,
-          });
-        }
-        ApproveSubmit();
-      }).catch((error) => {
-        console.log(error);
-      })
+    ).then((response) => {
+      if (response?.data?.status === 1) {
+        toast.success("Academy info updated successfully", {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+      ApproveSubmit();
+    }).catch((error) => {
+      console.log(error);
+    })
     setRevokeId(null);
   }
 
@@ -705,17 +665,17 @@ const Gallery = () => {
           Authorization: `Bearer ${decryptedToken}`
         }
       }
-      ).then((response) => {
-        if (response?.data?.status === 1) {
-          toast.success("Academy info updated successfully", {
-            position: "top-center",
-            autoClose: 2000,
-          });
-        }
+    ).then((response) => {
+      if (response?.data?.status === 1) {
+        toast.success("Academy info updated successfully", {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
 
-      }).catch((error) => {
-        console.log(error);
-      })
+    }).catch((error) => {
+      console.log(error);
+    })
     closeModal();
     setRevokeId(null);
     updatedAcadmeyInfo();
@@ -863,12 +823,12 @@ const Gallery = () => {
                   }}
                 >
                   <button
-                    className={`common-fonts contact-browse-btn ${status === 0 && (role_name === 'academy' || role_name === 'player') 
+                    className={`common-fonts contact-browse-btn ${status === 0 && (role_name === 'academy' || role_name === 'player')
                       ? "bmp_disable"
                       : ""
                       }`}
                     onClick={handleButtonClick2}
-                    disabled={status === 0 && (role_name === 'academy' || role_name === 'player') }
+                    disabled={status === 0 && (role_name === 'academy' || role_name === 'player')}
                   >
                     Browse
                   </button>

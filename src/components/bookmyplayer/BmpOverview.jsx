@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import S3FileUpload from 'react-s3';
 import "../styles/bmp.css";
 import Map from "../../assets/image/map.png";
 import Whatsapp from "../../assets/image/whatsapp.svg";
@@ -8,6 +9,7 @@ import {
   GET_ACADEMY,
   UPDATE_ACADEMY_TABLE2,
   GET_UPDATED_ACADEMY_INFO,
+  config,
   // RESTRICTED_KEYWORDS,
   // ADDRESS_API,
   // getDecryptedToken,
@@ -22,6 +24,7 @@ import { removeHtmlTags } from "./removeHtml";
 import { default_about } from "../utils/bmp_about";
 
 const BmpOverview = () => {
+  window.Buffer = window.Buffer || require("buffer").Buffer;
   const decryptedToken = localStorage.getItem("jwtToken");
   const academyId = localStorage.getItem("academy_id");
   const role_name = localStorage.getItem("role_name");
@@ -165,7 +168,7 @@ const BmpOverview = () => {
       .join(", ");
     setLanguageString(joinLanguage);
   };
-    //===============================================================================google map changes
+  //===============================================================================google map changes
   const handleInputChange = async (value) => {
     setAddress(value);
     setStateBtn(1);
@@ -330,6 +333,7 @@ const BmpOverview = () => {
       submitImage(event.target.files[0]);
     }
   };
+  
   const submitImage = (file) => {
     const selectedImage = file;
     if (selectedImage) {
@@ -339,46 +343,32 @@ const BmpOverview = () => {
         );
         return;
       }
-      const folder = "bookmyplayer/academy/" + academyId;
-      const imageNameWithoutExtension = selectedImage.name.replace(
-        /\.[^/.]+$/,
-        ""
-      );
-      const sanitizedImageName = imageNameWithoutExtension.replace(
-        /[^\w-]/g,
-        "-"
-      );
-      const uniqueFileName = `${folder}/${sanitizedImageName}`;
-      const data = new FormData();
-      data.append("file", selectedImage);
-      data.append("upload_preset", "zbxquqvw");
-      data.append("cloud_name", "cloud2cdn");
-      data.append("public_id", uniqueFileName);
       setIsUploading(true);
-      fetch("https://api.cloudinary.com/v1_1/cloud2cdn/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
+      const processedFileName = processImageName(selectedImage.name);
+      const modifiedFile = new File([selectedImage], processedFileName, { type: selectedImage.type });
+      const updatedConfig = {
+        ...config,
+        dirName: "academy/" + academyId,
+      };
+      S3FileUpload.uploadFile(modifiedFile, updatedConfig)
         .then((data) => {
           setSelectedFile(selectedImage);
           updateField("logo");
-          setFileName(processImageName(selectedImage.name));
-          if (processImageName(selectedImage.name).length === 0) {
+          setFileName(modifiedFile.name);
+          if (data?.location) {
             setNumber1(1);
           } else {
             setNumber1(0);
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         })
         .finally(() => {
           setIsUploading(false);
         });
     }
   };
-
   function handleChange(event) {
     const { name, value } = event.target;
     let redText = false;

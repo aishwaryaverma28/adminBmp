@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import S3FileUpload from 'react-s3';
 import "../styles/bmp.css";
 import { useParams } from "react-router-dom";
 import Map from "../../assets/image/map.png";
@@ -10,6 +11,7 @@ import {
   UPDATE_ACADEMY,
   UPDATE_ACADMEY_STATUS,
   GET_UPDATED_ACADEMY_INFO,
+  config,
   ADDRESS_API,
 } from "../utils/Constants";
 import { toast, ToastContainer } from "react-toastify";
@@ -24,6 +26,7 @@ import { default_about } from "../utils/bmp_about";
 const OverviewById = () => {
   const { id } = useParams();
   localStorage.setItem("academy_id", id);
+  window.Buffer = window.Buffer || require("buffer").Buffer;
   const role_name = localStorage.getItem("role_name");
   const decryptedToken = localStorage.getItem("jwtToken");
   const [revokeId, setRevokeId] = useState(null);
@@ -415,45 +418,33 @@ const OverviewById = () => {
         );
         return;
       }
-      const folder = "bookmyplayer/academy/" + id;
-      const imageNameWithoutExtension = selectedImage.name.replace(
-        /\.[^/.]+$/,
-        ""
-      );
-      const sanitizedImageName = imageNameWithoutExtension.replace(
-        /[^\w-]/g,
-        "-"
-      );
-      const uniqueFileName = `${folder}/${sanitizedImageName}`;
-      const data = new FormData();
-      data.append("file", selectedImage);
-      data.append("upload_preset", "zbxquqvw");
-      data.append("cloud_name", "cloud2cdn");
-      data.append("public_id", uniqueFileName);
       setIsUploading(true);
-      fetch("https://api.cloudinary.com/v1_1/cloud2cdn/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
+      const processedFileName = processImageName(selectedImage.name);
+      const modifiedFile = new File([selectedImage], processedFileName, { type: selectedImage.type });
+      const updatedConfig = {
+        ...config,
+        dirName: "academy/" + id,
+      };
+      S3FileUpload.uploadFile(modifiedFile, updatedConfig)
         .then((data) => {
           setSelectedFile(selectedImage);
           updateField("logo");
-          setFileName(processImageName(selectedImage.name));
-          if (processImageName(selectedImage.name).length === 0) {
-            setNumber1(1)
+          setFileName(modifiedFile.name);
+          if (data?.location) {
+            setNumber1(1);
           } else {
-            setNumber1(0)
+            setNumber1(0);
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         })
         .finally(() => {
           setIsUploading(false);
         });
     }
   };
+ 
   function handleChange(event) {
     const { name, value } = event.target;
     let redText = false;

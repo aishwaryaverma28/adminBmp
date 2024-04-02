@@ -6,9 +6,7 @@ import loader from "../assets/image/loader.gif"
 import CryptoJS from "crypto-js";
 const secretKey = "mySecretKey123";
 const Testing = () => {
-  // https://bmp.leadplaner.com/auth?auth=CEcWAQAGFg5GXllRU19IGAoTFgocNBoMRlFWU1FDVF9HBgoVHS0PFzsCBklJW19aUUJXXVpDWBk=
-  //admin============= CEcWAQAGFg5GXllRU19IGAoTFgocNBoMRlFWU1FDVF9HBgoVHS0PFzsCBklJW19aUENVUVlCWxk=
-  // acadmey=========https://bmp.leadplaner.com/auth?auth=CEcWAQAGFg5GXlhdWV9IGAoTFgocNBoMRlFWU1FCVl9HBgoVHS0PFzsCBklJW19aUEJcWF9DWxk=
+  // https://bmp.leadplaner.com/auth?auth=CEdDBxYRLSMARlFaUktGShsAAQEGHywBAEleWVlDVENJQRcdBDYYARc0AQVRUFlcUEBUWFtKX1MW
   const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const [authValue, setAuthValue] = useState('');
@@ -36,7 +34,7 @@ const Testing = () => {
     })
       .then((response) => {
         const data = response?.data?.user;
-        // console.log(response);
+        console.log(response);
         if (response.data.status === 1) {
           localStorage.setItem("org_id", data?.org_id);
           localStorage.setItem("role_name", data?.type?.toLowerCase());
