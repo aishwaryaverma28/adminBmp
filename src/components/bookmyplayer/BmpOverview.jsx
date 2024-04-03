@@ -10,9 +10,6 @@ import {
   UPDATE_ACADEMY_TABLE2,
   GET_UPDATED_ACADEMY_INFO,
   config,
-  // RESTRICTED_KEYWORDS,
-  // ADDRESS_API,
-  // getDecryptedToken,
 } from "../utils/Constants";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -303,6 +300,7 @@ const BmpOverview = () => {
         setIsLoading(false);
       });
   };
+  console.log(progress)
   useEffect(() => {
     academyDetails();
     updatedAcadmeyInfo();
@@ -337,12 +335,6 @@ const BmpOverview = () => {
   const submitImage = (file) => {
     const selectedImage = file;
     if (selectedImage) {
-      if (selectedImage.size > 2 * 1024 * 1024) {
-        alert(
-          "Image size should be less than 2MB. Please choose a smaller image."
-        );
-        return;
-      }
       setIsUploading(true);
       const processedFileName = processImageName(selectedImage.name);
       const modifiedFile = new File([selectedImage], processedFileName, { type: selectedImage.type });
@@ -1196,8 +1188,8 @@ const BmpOverview = () => {
                 <div className="bmp-image-preview">
                   <img
                     src={academyData?.logo === null
-                      ? "https://res.cloudinary.com/cloud2cdn/image/upload/q_10/bookmyplayer/asset/images/logo.svg"
-                      : `https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${academyData?.logo}`}
+                      ? "https://bmpcdn.s3.ap-south-1.amazonaws.com/default/academy_default_logo.webp"
+                      : `https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${academyData?.logo}`}
                     alt=""
                   />
                 </div>

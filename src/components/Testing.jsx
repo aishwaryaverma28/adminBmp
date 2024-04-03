@@ -6,7 +6,7 @@ import loader from "../assets/image/loader.gif"
 import CryptoJS from "crypto-js";
 const secretKey = "mySecretKey123";
 const Testing = () => {
-  // https://bmp.leadplaner.com/auth?auth=CEdDBxYRLSMARlFaUktGShsAAQEGHywBAEleWVlDVENJQRcdBDYYARc0AQVRUFlcUEBUWFtKX1MW
+  // https://bmp.leadplaner.com/auth?auth=EEMRHw4BIwBOUUFYXEZOAwUeDg8HNQUPSVtWVFtDWkhODgsRDRgJADsFBUNJW1taWFJWVVxAWxk=
   const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const [authValue, setAuthValue] = useState('');

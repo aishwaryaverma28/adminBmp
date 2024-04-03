@@ -110,9 +110,6 @@ const OverviewById = () => {
   const closeModal = () => {
     setOpen(false);
   }
-
-
-
   //===================================================================extra functions for approve n disapprove
   const updatedAcadmeyInfo = () => {
     axios
@@ -412,12 +409,6 @@ const OverviewById = () => {
   const submitImage = (file) => {
     const selectedImage = file;
     if (selectedImage) {
-      if (selectedImage.size > 2 * 1024 * 1024) {
-        alert(
-          "Image size should be less than 2MB. Please choose a smaller image."
-        );
-        return;
-      }
       setIsUploading(true);
       const processedFileName = processImageName(selectedImage.name);
       const modifiedFile = new File([selectedImage], processedFileName, { type: selectedImage.type });
@@ -1227,8 +1218,8 @@ const OverviewById = () => {
                 <div className="bmp-image-preview">
                   <img
                     src={academyData?.logo === null
-                      ? "https://res.cloudinary.com/cloud2cdn/image/upload/q_10/bookmyplayer/asset/images/logo.svg"
-                      : `https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${id}/${academyData?.logo}`}
+                      ? "https://bmpcdn.s3.ap-south-1.amazonaws.com/default/academy_default_logo.webp"
+                      : `https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${id}/${academyData?.logo}`}
                     alt=""
                     className="bmp-preview-image"
                   />

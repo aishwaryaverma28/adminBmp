@@ -50,7 +50,7 @@ const sendWhatsAppMessage = () => {
 
   return (
     <section className="setting-side-panel">
-      {userRole === "Academy_admin" && (
+      {userRole === "academy_admin" && (
         <div className="back-to-user general-refresh blog-back">
           <button className="common-fonts" onClick={handleBackToTable}>
             <img src={LeftArrow} alt="" />

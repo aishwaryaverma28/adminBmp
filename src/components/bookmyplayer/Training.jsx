@@ -5,12 +5,14 @@ import {
   UPDATE_ACADEMY_TABLE2,
   UPDATE_ACADEMY,
   UPDATE_ACADMEY_STATUS,
+  config,
 } from "../utils/Constants";
 import Trash from "../../assets/image/red-bin.svg";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DeleteImage from "./DeleteImage.jsx";
 import DisapproveModal from "./DisapproveModal.jsx";
+import S3FileUpload from 'react-s3';
 
 const Training = ({
   status,
@@ -20,6 +22,7 @@ const Training = ({
   revokeId,
 }) => {
   const decryptedToken = localStorage.getItem("jwtToken");
+  window.Buffer = window.Buffer || require("buffer").Buffer;
   const academyId = localStorage.getItem("academy_id");
   const role_name = localStorage.getItem("role_name");
   const [isUploadingMulti, setIsUploadingMulti] = useState(false);
@@ -172,51 +175,30 @@ const Training = ({
     setIsUploadingMulti(true);
     const selectedImage = file;
     if (selectedImage) {
-      if (selectedImage.size > 2 * 1024 * 1024) {
-        showAlertOnce(
-          "Image size should be less than 2MB. Please choose a smaller image."
-        );
-        setIsUploadingMulti(false);
-        return;
-      }
-      const folder = "bookmyplayer/academy/" + academyId;
-      const imageNameWithoutExtension = selectedImage.name.replace(
-        /\.[^/.]+$/,
-        ""
-      );
-      const sanitizedImageName = imageNameWithoutExtension.replace(
-        /[^\w-]/g,
-        "-"
-      );
-      const uniqueFileName = `${folder}/${sanitizedImageName}`;
-      const data = new FormData();
-      data.append("file", selectedImage);
-      data.append("upload_preset", "zbxquqvw");
-      data.append("cloud_name", "cloud2cdn");
-      data.append("public_id", uniqueFileName);
-
-      fetch("https://api.cloudinary.com/v1_1/cloud2cdn/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setFileName(processImageName(selectedImage.name));
-          const imageUrl = processImageName(selectedImage.name);
-          if (data.secure_url) {
-            photoUrls.push(imageUrl);
-            setPhotoUrls(photoUrls);
-            updateField("training_ground_photos");
-            setStateBtn(1);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          setIsUploadingMulti(false);
-        });
-    }
+      const processedFileName = processImageName(selectedImage.name);
+      const modifiedFile = new File([selectedImage], processedFileName, { type: selectedImage.type });
+      const updatedConfig = {
+          ...config,
+          dirName: "academy/" + academyId,
+      };
+      S3FileUpload.uploadFile(modifiedFile, updatedConfig)
+          .then((data) => {
+              setFileName(modifiedFile.name);
+              const imageUrl = modifiedFile.name;
+              if (data.location) {
+                  photoUrls?.push(imageUrl);
+                  setPhotoUrls(photoUrls);
+                  updateField("training_ground_photos");
+                  setStateBtn(1);
+              }
+          })
+          .catch((err) => {
+              console.error(err);
+          })
+          .finally(() => {
+              setIsUploadingMulti(false);
+          });
+  }
   };
   const handleDeleteOpen = (index, prop) => {
     setIsDeleteModalOpen(true);
@@ -284,51 +266,30 @@ const Training = ({
     setIsUploadingMulti2(true);
     const selectedImage = file;
     if (selectedImage) {
-      if (selectedImage.size > 2 * 1024 * 1024) {
-        showAlertOnce(
-          "Image size should be less than 2MB. Please choose a smaller image."
-        );
-        setIsUploadingMulti2(false);
-        return;
-      }
-      const folder = "bookmyplayer/academy/" + academyId;
-      const imageNameWithoutExtension = selectedImage.name.replace(
-        /\.[^/.]+$/,
-        ""
-      );
-      const sanitizedImageName = imageNameWithoutExtension.replace(
-        /[^\w-]/g,
-        "-"
-      );
-      const uniqueFileName = `${folder}/${sanitizedImageName}`;
-      const data = new FormData();
-      data.append("file", selectedImage);
-      data.append("upload_preset", "zbxquqvw");
-      data.append("cloud_name", "cloud2cdn");
-      data.append("public_id", uniqueFileName);
-
-      fetch("https://api.cloudinary.com/v1_1/cloud2cdn/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setFileName(processImageName(selectedImage.name));
-          const imageUrl = processImageName(selectedImage.name);
-          if (data.secure_url) {
-            photoUrls2.push(imageUrl);
-            setPhotoUrls2(photoUrls2);
-            updateField("tournament_photos");
-            setStateBtn(1);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          setIsUploadingMulti2(false);
-        });
-    }
+      const processedFileName = processImageName(selectedImage.name);
+      const modifiedFile = new File([selectedImage], processedFileName, { type: selectedImage.type });
+      const updatedConfig = {
+          ...config,
+          dirName: "academy/" + academyId,
+      };
+      S3FileUpload.uploadFile(modifiedFile, updatedConfig)
+          .then((data) => {
+              setFileName(modifiedFile.name);
+              const imageUrl = modifiedFile.name;
+              if (data.location) {
+                  photoUrls?.push(imageUrl);
+                  setPhotoUrls(photoUrls);
+                  updateField("tournament_photos");
+                  setStateBtn(1);
+              }
+          })
+          .catch((err) => {
+              console.error(err);
+          })
+          .finally(() => {
+              setIsUploadingMulti(false);
+          });
+  }
   };
   const handleDeleteOpen2 = (index, prop) => {
     setIsDeleteModalOpen2(true);
@@ -621,7 +582,7 @@ const Training = ({
                       <div className="bmp-img-name">
                         <div className="bmp-video">
                           <img
-                            src={`https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${photo}`}
+                            src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${photo}`}
                             alt="Selected Preview"
                           />
                         </div>
@@ -643,7 +604,7 @@ const Training = ({
                       </div>
                     </div>
                     <img
-                      src={`https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${photo}`}
+                      src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${photo}`}
                       alt="Selected Preview"
                       key={index}
                     />
@@ -665,7 +626,7 @@ const Training = ({
                         <div className="bmp-img-name">
                           <div className="bmp-video">
                             <img
-                              src={`https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${photo}`}
+                              src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${photo}`}
                               alt="Selected Preview"
                             />
                           </div>
@@ -687,7 +648,7 @@ const Training = ({
                         </div>
                       </div>
                       <img
-                        src={`https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${photo}`}
+                        src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${photo}`}
                         alt="Selected Preview"
                         key={index}
                       />
@@ -789,7 +750,7 @@ const Training = ({
                         <div className="bmp-img-name">
                           <div className="bmp-video">
                             <img
-                              src={`https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${photo}`}
+                              src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${photo}`}
                               alt="Selected Preview"
                             />
                           </div>
@@ -811,7 +772,7 @@ const Training = ({
                         </div>
                       </div>
                       <img
-                        src={`https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${photo}`}
+                        src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${photo}`}
                         alt="Selected Preview"
                         key={index}
                       />
@@ -833,7 +794,7 @@ const Training = ({
                           <div className="bmp-img-name">
                             <div className="bmp-video">
                               <img
-                                src={`https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${photo}`}
+                                src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${photo}`}
                                 alt="Selected Preview"
                               />
                             </div>
@@ -855,7 +816,7 @@ const Training = ({
                           </div>
                         </div>
                         <img
-                          src={`https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${photo}`}
+                          src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${photo}`}
                           alt="Selected Preview"
                           key={index}
                         />

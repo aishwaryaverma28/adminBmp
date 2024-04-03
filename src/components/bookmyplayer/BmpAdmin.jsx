@@ -31,35 +31,7 @@ const BmpAdmin = () => {
       >
         <span className="mrkt-whatsapp">Players</span>
       </button>
-            
-      <button
-        className={`genral-btn contact-genral-btn ${
-          activeTab === "coaches" ? "genral-active" : ""
-        }`}
-        onClick={() => handleTabClick("coaches")}
-      >
-        <span className="mrkt-whatsapp">Coaches</span>
-      </button>
-            
-      <button
-        className={`genral-btn contact-genral-btn ${
-          activeTab === "club" ? "genral-active" : ""
-        }`}
-        onClick={() => handleTabClick("club")}
-      >
-        <span className="mrkt-whatsapp">Clubs</span>
-      </button>
-
-            
-      <button
-        className={`genral-btn contact-genral-btn ${
-          activeTab === "league" ? "genral-active" : ""
-        }`}
-        onClick={() => handleTabClick("league")}
-      >
-        <span className="mrkt-whatsapp">Leagues</span>
-      </button>
-    </div>
+     </div>
 
 
       {

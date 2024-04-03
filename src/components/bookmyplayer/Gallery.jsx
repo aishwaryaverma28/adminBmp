@@ -256,13 +256,7 @@ const Gallery = () => {
   const submitImage = (file) => {
     const selectedImage = file;
     if (selectedImage) {
-      if (selectedImage.size > 2 * 1024 * 1024) {
-        alert(
-          "Image size should be less than 2MB. Please choose a smaller image."
-        );
-        return;
-      }
-      setIsUploading(true);
+     setIsUploading(true);
       const processedFileName = processImageName(selectedImage.name);
       const modifiedFile = new File([selectedImage], processedFileName, { type: selectedImage.type });
       const updatedConfig = {
@@ -328,13 +322,6 @@ const Gallery = () => {
     setIsUploadingMulti(true);
     const selectedImage = file;
     if (selectedImage) {
-        if (selectedImage.size > 2 * 1024 * 1024) {
-            showAlertOnce(
-                "Image size should be less than 2MB. Please choose a smaller image."
-            );
-            setIsUploadingMulti(false);
-            return;
-        }
         const processedFileName = processImageName(selectedImage.name);
         const modifiedFile = new File([selectedImage], processedFileName, { type: selectedImage.type });
         const updatedConfig = {
@@ -365,13 +352,6 @@ const submitVideo2 = (file) => {
   setIsUploadingMulti(true);
   const selectedImage = file;
   if (selectedImage) {
-      if (selectedImage.size > 10 * 1024 * 1024) {
-          showAlertOnce(
-              "Video size should be less than 10MB. Please choose a smaller video."
-          );
-          setIsUploadingMulti(false);
-          return;
-      }
       const processedFileName = processImageName(selectedImage.name);
       const modifiedFile = new File([selectedImage], processedFileName, { type: selectedImage.type });
       const updatedConfig = {
@@ -787,8 +767,8 @@ const submitVideo2 = (file) => {
                     <div className="bmp-image-preview">
                       <img
                         src={academyData?.banner === null
-                          ? `https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/default/${academyData?.sport}_banner.webp`
-                          : `https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${academyData?.banner}`}
+                          ? `https://bmpcdn.s3.ap-south-1.amazonaws.com/default/${academyData?.sport}_banner.webp`
+                          : `https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${academyData?.banner}`}
                         alt=""
                         className="bmp-preview-image"
                       />
@@ -902,7 +882,7 @@ const submitVideo2 = (file) => {
                       <div className="bmp-player-img">
                         <video width="270" height="140" controls>
                           <source
-                            src={`https://res.cloudinary.com/cloud2cdn/video/upload/bookmyplayer/academy/${academyId}/${video}`}
+                            src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${video}`}
                             type="video/mp4"
                           />
                         </video>
@@ -947,7 +927,7 @@ const submitVideo2 = (file) => {
                         <div className="bmp-player-img">
                           <video width="270" height="140" controls>
                             <source
-                              src={`https://res.cloudinary.com/cloud2cdn/video/upload/bookmyplayer/academy/${academyId}/${video}`}
+                              src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${video}`}
                               type="video/mp4"
                             />
                           </video>
@@ -972,7 +952,7 @@ const submitVideo2 = (file) => {
                         <div className="bmp-img-name">
                           <div className="bmp-video" >
                             <img
-                              src={`https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${photo}`}
+                              src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${photo}`}
                               alt="Selected Preview"
                             />
                           </div>
@@ -994,7 +974,7 @@ const submitVideo2 = (file) => {
                         </div>
                       </div>
                       <img
-                        src={`https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${photo}`}
+                        src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${photo}`}
                         alt="Selected Preview"
                         key={index}
                       />
@@ -1015,7 +995,7 @@ const submitVideo2 = (file) => {
                           <div className="bmp-img-name">
                             <div className="bmp-video">
                               <img
-                                src={`https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${photo}`}
+                                src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${photo}`}
                                 alt="Selected Preview"
                               />
                             </div>
@@ -1037,7 +1017,7 @@ const submitVideo2 = (file) => {
                           </div>
                         </div>
                         <img
-                          src={`https://res.cloudinary.com/cloud2cdn/image/upload/bookmyplayer/academy/${academyId}/${photo}`}
+                          src={`https://bmpcdn.s3.ap-south-1.amazonaws.com/academy/${academyId}/${photo}`}
                           alt="Selected Preview"
                           key={index}
                         />
